@@ -1,0 +1,30 @@
+https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/
+O(nlog(maxEle)) S(1)
+
+class Solution {
+    public int minimizedMaximum(int n, int[] quantities) {
+        int minQuantity = 1, maxQuantity = 0, ans = 0;
+        for(int quantity: quantities){
+            maxQuantity = Math.max(maxQuantity, quantity);
+        }
+        while(minQuantity <= maxQuantity){
+            int currQuantity = minQuantity + (maxQuantity - minQuantity)/2;
+            boolean isValid = isQuantityValid(currQuantity, n, quantities);
+            if(isValid){
+                ans = currQuantity;
+                maxQuantity = currQuantity - 1;
+            }else{
+                minQuantity = currQuantity + 1;
+            }
+        }
+        return ans;
+    }
+    public boolean isQuantityValid(int quantity, int store, int[] quantities){
+        int reqStore = 0;
+        for(int q: quantities){
+            reqStore = reqStore + q/quantity + (q%quantity == 0? 0:1);
+            if(reqStore > store) return false;
+        }
+        return true;
+    }
+}

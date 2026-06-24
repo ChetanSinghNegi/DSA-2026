@@ -1,0 +1,48 @@
+https://leetcode.com/problems/maximum-sum-of-distinct-subarrays-with-length-k/description/
+
+O(n) S(k)
+
+class Solution {
+    public long maximumSubarraySum(int[] nums, int k) {
+        // HashMap to store frequency of elements in the current window
+        HashMap<Integer, Integer> freq = new HashMap<>();
+        
+        long maximumSum = 0;   // Stores the maximum sum of valid subarrays
+        long currentSum = 0;   // Stores the sum of the current window
+
+        // Process the first window of size k
+        for (int i = 0; i < k; i++) {
+            int ele = nums[i];
+            currentSum += ele;
+            freq.put(ele, freq.getOrDefault(ele, 0) + 1);
+        }
+
+        // If all elements are unique in the first window, update maximumSum
+        if (freq.size() == k) {
+            maximumSum = currentSum;
+        }
+
+        // Slide the window across the array
+        for (int i = k; i < nums.length; i++) {
+            // Remove the element going out of the window
+            int prev = nums[i - k];
+            currentSum -= prev;
+            freq.put(prev, freq.get(prev) - 1);
+            if (freq.get(prev) == 0) {
+                freq.remove(prev); // Clean up to maintain correct size
+            }
+
+            // Add the new element entering the window
+            int curr = nums[i];
+            currentSum += curr;
+            freq.put(curr, freq.getOrDefault(curr, 0) + 1);
+
+            // If window has all unique elements, update maximumSum
+            if (freq.size() == k) {
+                maximumSum = Math.max(maximumSum, currentSum);
+            }
+        }
+
+        return maximumSum;
+    }
+}

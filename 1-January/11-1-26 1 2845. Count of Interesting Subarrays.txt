@@ -1,0 +1,63 @@
+https://leetcode.com/problems/count-of-interesting-subarrays/
+
+with explicit prefix array O(n) S(n)
+
+class Solution {
+    public long countInterestingSubarrays(List<Integer> nums, int modulo, int k) {
+        int n = nums.size();
+
+        // Step 1: Build prefix sum array
+        // prefix[i] = count of elements nums[0..i]
+        // where nums[x] % modulo == k
+        int[] prefix = new int[n];
+        prefix[0] = (nums.get(0) % modulo == k) ? 1 : 0;
+
+        for (int i = 1; i < n; i++) {
+            prefix[i] = prefix[i - 1];
+            if (nums.get(i) % modulo == k) {
+                prefix[i]++;
+            }
+        }
+
+        // Step 2: HashMap to store remainder frequencies
+        // key   -> prefix[i] % modulo
+        // value -> how many times this remainder appeared
+        Map<Integer, Integer> freq = new HashMap<>();
+        freq.put(0, 1); // base case (empty prefix)
+
+        long result = 0;
+
+        // Step 3: Count interesting subarrays
+        for (int i = 0; i < n; i++) {
+            int currRem = prefix[i] % modulo;
+            int neededRem = (currRem - k + modulo) % modulo;
+
+            // Add number of valid previous prefixes
+            result += freq.getOrDefault(neededRem, 0);
+
+            // Store current remainder
+            freq.put(currRem, freq.getOrDefault(currRem, 0) + 1);
+        }
+
+        return result;
+    }
+}
+
+without explicit prefix array O(n) S(n)
+class Solution {
+    public long countInterestingSubarrays(List<Integer> nums, int modulo, int k) {
+        int n = nums.size();
+        int cnt = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        long ansCount = 0;
+        hm.put(0,1);
+        for(int i = 0;i<n;i++){
+            cnt = nums.get(i) % modulo == k ? cnt+1 : cnt;
+            int currRem = cnt % modulo;
+            int need = ( currRem - k + modulo ) % modulo;
+            ansCount += (long)hm.getOrDefault(need, 0);
+            hm.put(currRem, hm.getOrDefault(currRem,0)+1);
+        }
+        return ansCount;
+    }
+}

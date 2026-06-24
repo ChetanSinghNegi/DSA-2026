@@ -1,0 +1,65 @@
+https://leetcode.com/problems/reorder-list/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head.next == null) return ;
+
+        // finding Middle
+        ListNode middle = findMiddle(head);
+        ListNode middleNext = middle.next;
+        
+        //breaking list to two halfs
+        middle.next = null;
+
+        // reversing second half
+        ListNode reverseSecondLL = reverseLL(middleNext);
+
+        // merging both in accordance to requirement
+        ListNode answer = new ListNode(0);
+        ListNode answerhead = answer;
+        while(head != null || reverseSecondLL != null){
+            if(head != null){
+                answer.next = head;
+                head = head.next;
+                answer = answer.next;
+            }
+            if(reverseSecondLL != null){
+                answer.next = reverseSecondLL;
+                reverseSecondLL = reverseSecondLL.next;
+                answer = answer.next;
+            }
+        }
+        head = answerhead.next;
+    }
+
+    public ListNode reverseLL(ListNode head){
+        ListNode prev = null;
+        while(head!=null){
+            ListNode headNext = head.next;
+            head.next = prev;
+            prev = head;
+            head = headNext;
+        }
+        return prev;
+    } 
+
+    public ListNode findMiddle(ListNode head){
+        ListNode slowNode = head;
+        ListNode fastNode = head;
+        while(fastNode.next != null && fastNode.next.next!=null){
+            slowNode = slowNode.next;
+            fastNode = fastNode.next.next;
+        }
+        return slowNode;
+    }
+}

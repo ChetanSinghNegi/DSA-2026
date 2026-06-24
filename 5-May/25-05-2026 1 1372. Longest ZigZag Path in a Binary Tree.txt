@@ -1,0 +1,38 @@
+https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/
+O(n) S(rec(h) + aux(1))
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int maxLength;
+    public int longestZigZag(TreeNode root) {
+        maxLength = 0;
+        helper(root, true, 0);
+        helper(root, false, 0);
+        return maxLength;
+    }
+    public void helper(TreeNode node, boolean isFromLeft, int currLength){
+        if(node == null) return;
+        maxLength = Math.max(maxLength, currLength);
+        if(isFromLeft == true){
+            helper(node.right, false, currLength+1);
+            helper(node.left, true, 1);
+        }else{
+            helper(node.left, true, currLength+1);
+            helper(node.right, false, 1);
+        }
+        return;
+    }
+}

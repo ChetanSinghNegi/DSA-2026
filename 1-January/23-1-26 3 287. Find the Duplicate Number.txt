@@ -1,0 +1,31 @@
+https://leetcode.com/problems/find-the-duplicate-number/description/
+
+O(n) S(n)
+class Solution {
+    public int findDuplicate(int[] nums) {
+        HashSet<Integer> hm = new HashSet<>();
+        for(int i = 0; i< nums.length;i++){
+            int ele = nums[i];
+            if(hm.contains(ele)) return ele;
+            hm.add(ele);
+        }
+        return 0;
+    }
+}
+
+O(n) S(1)
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int ans = 0;
+        for(int i = 0; i < nums.length;i++){
+            int newIdx = Math.abs(nums[i]); //element as an idx = newIdx
+            int newEle = nums[newIdx];  // element present at newIdx
+            if(newEle < 0) {  //if element already visited the return ans
+                return newIdx;
+            }
+            nums[newIdx] = -1 * nums[newIdx];  //marking element as visited
+        }
+
+        return ans;
+    }
+}

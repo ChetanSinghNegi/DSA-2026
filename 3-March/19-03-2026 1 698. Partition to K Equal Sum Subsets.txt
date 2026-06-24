@@ -1,0 +1,65 @@
+https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
+
+Time Complexity : O(n*2^n) (Worst case)
+Space Complexity : rec - S(n) temp - S(1) => S(1)
+
+class Solution {
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        int sum = 0;
+        for (int ele : nums) sum += ele;
+        
+        // Basic math checks
+        if (sum % k != 0) return false;
+        int requiredSum = sum / k;
+        for (int ele : nums) if (ele > requiredSum) return false;
+
+        // Sorting descending helps prune the search tree significantly
+        java.util.Arrays.sort(nums);
+        reverse(nums);
+
+        boolean[] visited = new boolean[nums.length];
+        return helper(nums, visited, 0, k, 0, requiredSum);
+    }
+
+    // k: subsets remaining to be found
+    // currSum: sum of the current subset being built
+    // start: index to start searching from to avoid redundant combinations
+    public boolean helper(int[] nums, boolean[] visited, int start, int k, int currSum, int requiredSum) {
+        // Base Case: If we only have 1 subset left to find, 
+        // the remaining unvisited numbers must sum to requiredSum.
+        if (k == 1) return true;
+
+        // If current subset is complete, start finding the next subset from the beginning
+        if (currSum == requiredSum) {
+            return helper(nums, visited, 0, k - 1, 0, requiredSum);
+        }
+
+        for (int i = start; i < nums.length; i++) {
+            // Skip if already used or if adding it exceeds target
+            if (visited[i] || currSum + nums[i] > requiredSum) continue;
+
+            visited[i] = true; // Mark as used
+            
+            // Move to next element (i + 1) for the current subset
+            if (helper(nums, visited, i + 1, k, currSum + nums[i], requiredSum)) {
+                return true;
+            }
+
+            visited[i] = false; // Backtrack (unmark)
+
+            // Optimization: If we just started a subset and it failed, 
+            // no need to try other numbers in this position.
+            if (currSum == 0) return false;
+        }
+
+        return false;
+    }
+
+    private void reverse(int[] nums) {
+        for (int i = 0, j = nums.length - 1; i < j; i++, j--) {
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+        }
+    }
+}

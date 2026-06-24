@@ -1,0 +1,82 @@
+https://leetcode.com/problems/4sum/
+
+O(n3) S(1);
+
+class Solution {
+    public int getDiff(int a, int b){
+        int MOD = 1_000_000_007;
+
+        long res = ((long) (a - b)) % MOD;
+        res = (res) % MOD;  // handles negative values
+
+        int intNum = (int) res;
+        return intNum;
+    }
+    public int getAdd(int a, int b){
+        int MOD = 1_000_000_007;
+
+        long res = ((long) (a + b)) % MOD;
+        res = (res) % MOD;  // handles negative values
+
+        int intNum = (int) res;
+        return intNum;
+    }
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        int n = nums.length;
+
+        for (int i = 0; i < n - 3; i++) {
+
+            // skip duplicate fixed elements
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int firstEle = nums[i];
+            int currTar = getDiff(target, firstEle) ;
+            
+
+            threeSum(nums, i + 1, currTar, firstEle, res);
+        }
+
+        return res;
+    }
+    public List<List<Integer>> threeSum(int[] nums, int stIdx, int target, int firstEle, List<List<Integer>> res) {
+        int n = nums.length;
+
+        for (int i = stIdx; i < n - 2; i++) {
+
+            // skip duplicate fixed elements
+            if (i > stIdx && nums[i] == nums[i - 1]) continue;
+            int secondEle = nums[i];
+            int currTarget = getDiff(target, secondEle) ;
+
+            twoSum(nums, i + 1, currTarget, firstEle, secondEle, res);
+        }
+
+        return res;
+    }
+
+    private void twoSum(int[] nums, int leftIdx, int target, int firstEle, int secondEle, List<List<Integer>> res) {
+        int rightIdx = nums.length - 1;
+
+        while (leftIdx < rightIdx) {
+            // int sum = nums[leftIdx] + nums[rightIdx];
+            int sum = getAdd(nums[leftIdx], nums[rightIdx]);
+
+            if (sum == target) {
+                res.add(Arrays.asList(firstEle, secondEle, nums[leftIdx], nums[rightIdx]));
+
+                leftIdx++;
+                rightIdx--;
+
+                // skip duplicates for left and right
+                while (leftIdx < rightIdx && nums[leftIdx] == nums[leftIdx - 1]) leftIdx++;
+                while (leftIdx < rightIdx && nums[rightIdx] == nums[rightIdx + 1]) rightIdx--;
+
+            } else if (sum < target) {
+                leftIdx++;
+            } else {
+                rightIdx--;
+            }
+        }
+    }
+}

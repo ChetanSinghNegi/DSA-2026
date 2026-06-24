@@ -1,0 +1,27 @@
+https://leetcode.com/problems/permutations/
+Time Complexity: O(n!*n)
+Auxiliary space (recursion + temporary list): S ( 𝑛 ) Output space (all permutations): S ( 𝑛 ⋅ 𝑛 ! )
+S(n*n!)
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> permutations = new ArrayList<>();
+        helper(new ArrayList<>(), permutations, nums);
+        return permutations;
+    }
+    public void helper(List<Integer> permutation, List<List<Integer>> permutations, int[] nums){
+        if(permutation.size() == nums.length){
+            permutations.add(new ArrayList<>(permutation));
+            return;
+        }
+        for(int i = 0;i<nums.length;i++){
+            if(nums[i] == -11) continue;
+            int ele = nums[i];
+            permutation.add(ele);
+            nums[i] = -11;
+            helper(permutation, permutations, nums);
+            permutation.remove(permutation.size()-1);
+            nums[i] = ele;
+        }
+    }
+}

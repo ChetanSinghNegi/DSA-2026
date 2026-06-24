@@ -1,0 +1,20 @@
+https://leetcode.com/problems/beautiful-arrangement/
+O(n!) S(n)
+
+class Solution {
+    public int countArrangement(int n) {
+        boolean[] vis = new boolean[n+1];
+        return helper(1, vis);
+    }
+    public int helper(int level, boolean[] vis){
+        if(level == vis.length) return 1;
+        int currCnt = 0;
+        for(int i = 1;i<vis.length;i++){
+            if(vis[i] == true || (level % i != 0 && i % level != 0) ) continue;
+            vis[i] = true;
+            currCnt += helper(level+1, vis);
+            vis[i] = false;
+        }
+        return currCnt;
+    }
+}

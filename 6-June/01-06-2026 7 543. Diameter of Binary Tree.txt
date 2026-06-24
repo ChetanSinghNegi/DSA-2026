@@ -1,0 +1,32 @@
+https://leetcode.com/problems/diameter-of-binary-tree/description/
+O(n) S( rec(h) + aux(1) )
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int maxDia;
+    public int diameterOfBinaryTree(TreeNode root) {
+        maxDia = 0;
+        helper(root);
+        return maxDia;
+    }
+    public int helper(TreeNode node){
+        if(node == null) return 0;
+        int leftHeight = helper(node.left);
+        int rightHeight = helper(node.right);
+        maxDia = Math.max(maxDia, leftHeight+rightHeight);
+        return Math.max(leftHeight, rightHeight)+1;
+    }
+}

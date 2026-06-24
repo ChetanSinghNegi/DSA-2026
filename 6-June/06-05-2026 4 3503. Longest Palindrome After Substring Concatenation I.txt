@@ -1,0 +1,30 @@
+https://leetcode.com/problems/longest-palindrome-after-substring-concatenation-i/
+O(n2*m3) S(1)
+
+class Solution {
+    public boolean isPalindromicFunc(String str){
+        int st = 0, ed = str.length()-1;
+        while(st<ed){
+            if(str.charAt(st) != str.charAt(ed)) return false;
+            st++; ed--;
+        }
+        return true;
+    }
+    public int longestPalindrome(String s, String t) {
+        int max = 1;
+        for(int i = 0;i<s.length();i++){
+            for(int j = i; j <= s.length();j++){
+                String sSub = s.substring(i, j);
+                for(int k = 0;k<t.length();k++){
+                    for(int l = k; l <= t.length();l++){
+                        String tSub = t.substring(k, l);
+                        String currStr = sSub+tSub;
+                        boolean isPalindromic = isPalindromicFunc(currStr);
+                        if(isPalindromic == true) max =Math.max(max, currStr.length());
+                    }
+                }
+            }
+        }
+        return max;
+    }
+}

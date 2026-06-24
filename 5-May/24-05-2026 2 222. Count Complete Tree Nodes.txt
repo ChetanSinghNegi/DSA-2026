@@ -1,0 +1,21 @@
+https://leetcode.com/problems/count-complete-tree-nodes/
+O(n) S(rec(h) + aux(1))
+class Solution {
+    public int getHeight(TreeNode node, boolean rightTreeFlag){
+        if(node == null) return 0;
+        if(rightTreeFlag == true){
+            return 1 +  getHeight(node.right, true);
+        }else{
+            return 1 +  getHeight(node.left, false);
+        }
+    }
+    public int countNodes(TreeNode root) {
+        if(root == null) return 0;
+        int leftHeight = getHeight(root.left,false);
+        int rightHeight = getHeight(root.right, true);
+        if(leftHeight == rightHeight) return 2*(int)Math.pow(2, leftHeight)-1;
+        int leftCount = countNodes(root.left);
+        int rightCount = countNodes(root.right);
+        return leftCount+rightCount+1;
+    }
+}

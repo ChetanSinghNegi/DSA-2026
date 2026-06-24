@@ -1,0 +1,44 @@
+https://leetcode.com/problems/design-browser-history/description/
+O(n) S(n)
+
+class BrowserHistory {
+    Stack<String> main;
+    Stack<String> backup;
+
+    public BrowserHistory(String homepage) {
+        main = new Stack<>();
+        backup = new Stack<>();
+        main.add(homepage);
+    }
+    
+    public void visit(String url) {
+        backup = new Stack<>();
+        main.add(url);
+    }
+    
+    public String back(int steps) {
+        while(main.size() > 1 && steps > 0){
+            steps--;
+            String poppedUrl = main.pop();
+            backup.push(poppedUrl);
+        }
+        return main.size() > 0 ? main.peek() : "";
+    }
+    
+    public String forward(int steps) {
+        while(backup.size() > 0 && steps > 0){
+            String poppedUrl = backup.pop();
+            main.push(poppedUrl);
+            steps--;
+        }
+        return main.size() > 0 ? main.peek() : "";
+    }
+}
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * BrowserHistory obj = new BrowserHistory(homepage);
+ * obj.visit(url);
+ * String param_2 = obj.back(steps);
+ * String param_3 = obj.forward(steps);
+ */

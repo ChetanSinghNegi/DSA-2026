@@ -1,0 +1,22 @@
+https://leetcode.com/problems/palindromic-substrings/
+
+O(n2) S(n) Expand around middle
+class Solution {
+    public int expandCenter(String s, int st, int ed){
+        int count = 0;
+        while( st >= 0 && ed < s.length() && s.charAt(st) == s.charAt(ed)){
+            st--; ed++;
+            count++;
+        }
+        return count;
+    }
+    public int countSubstrings(String s) {
+        int count = 0;
+        for(int i = 0;i<s.length();i++){
+            int odd = expandCenter(s, i, i);
+            int even = expandCenter(s, i, i+1);
+            count+=even + odd;
+        }
+        return count;
+    }
+}

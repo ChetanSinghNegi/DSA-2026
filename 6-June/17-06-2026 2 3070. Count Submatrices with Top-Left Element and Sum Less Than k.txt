@@ -1,0 +1,17 @@
+https://leetcode.com/problems/count-submatrices-with-top-left-element-and-sum-less-than-k/
+O(n*m) S(n*m);
+class Solution {
+    public int countSubmatrices(int[][] grid, int k) {
+        int len = grid.length, bre = grid[0].length, count = 0;;
+        int[][] psa = new int[len][bre];
+        for(int i = 0;i<len;i++){
+            int pre = 0;
+            for(int j = 0;j<bre;j++){
+                pre = pre+grid[i][j];
+                psa[i][j] = pre + (i-1 >= 0 ? psa[i-1][j] : 0);
+                if(psa[i][j] <= k) count++;
+            }
+        }
+        return count;
+    }
+}

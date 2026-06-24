@@ -1,0 +1,24 @@
+https://leetcode.com/problems/combination-sum-iii/
+O(9^k)=> Exponential
+S(rec - k + temp - 1) => S(1)
+
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> combinations = new ArrayList<>();
+        List<Integer> combination = new ArrayList<>();
+        helper(1, n, k, combination, combinations);
+        return combinations;
+    }
+    public void helper(int idx, int sum, int k, List<Integer> combination, List<List<Integer>> combinations){
+        if(sum == 0){
+            if(combination.size()==k) combinations.add(new ArrayList<>(combination));
+            return;
+        }
+        if(sum < 0 || idx > 9 || combination.size() >= k) return;
+        for(int i = idx; i<=9;i++){
+            combination.add(i);
+            helper(i+1, sum-i, k, combination, combinations);
+            combination.remove(combination.size()-1);
+        }
+    }
+}

@@ -1,0 +1,31 @@
+https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/
+O(n) S(n)
+
+class Solution {
+    public int getMaxLen(int[] nums) {
+        int maxLen = 0, preLen = 0, sufLen = 0, n = nums.length, preMul = 1, sufMul = 1;
+        for(int i = 0;i<n;i++){
+            if(preMul == 0){
+                 preMul = 1;
+                 preLen = 0;
+            }
+            if(sufMul == 0){
+                 sufMul = 1;
+                 sufLen = 0;
+            }
+            int capPreNum = nums[i] == 0 ? 0 : nums[i] < 0 ? -1 : 1;
+            int capSufNum = nums[n-i-1] == 0 ? 0 : nums[n-i-1] < 0 ? -1 : 1;
+            preMul *= capPreNum;
+            sufMul *= capSufNum;
+            preLen++;
+            sufLen++;
+            if(preMul > 0){
+                maxLen = Math.max(maxLen, preLen);
+            }
+            if(sufMul > 0){
+                maxLen = Math.max(maxLen, sufLen);
+            }
+        }
+        return maxLen;
+    }
+}

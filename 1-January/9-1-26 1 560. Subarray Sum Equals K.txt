@@ -1,0 +1,24 @@
+https://leetcode.com/problems/subarray-sum-equals-k/
+
+O(n) S(n)
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int n = nums.length;
+        int[] psa = new int[n];
+        int cnt = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        hm.put(0,1);
+        psa[0] = nums[0];
+        for(int i = 1;i<n;i++){
+            psa[i] = psa[i-1] + nums[i];
+        }
+        for(int i = 0;i<n;i++){
+            int diff = psa[i] - k;
+            int freq = hm.getOrDefault(diff,0);
+            cnt += freq;
+            hm.put(psa[i],hm.getOrDefault(psa[i],0)+1);
+        }
+        return cnt;
+    }
+}

@@ -1,0 +1,54 @@
+https://leetcode.com/problems/maximum-distance-between-a-pair-of-values/description/
+O(n+m) S(1) => Two Pointer
+O(nlogm) S(1) => Binary Search
+
+Two Pointer
+class Solution {
+    public int maxDistance(int[] nums1, int[] nums2) {
+        int i = 0, j = 0;
+        int maxDist = 0;
+
+        while (i < nums1.length && j < nums2.length) {
+            if (nums1[i] <= nums2[j]) {
+                // valid pair, update max distance
+                maxDist = Math.max(maxDist, j - i);
+                j++; // try to extend distance
+            } else {
+                i++; // move i forward to find smaller nums1[i]
+            }
+        }
+
+        return maxDist;
+    }
+}
+
+
+Binary Search 
+class Solution {
+    public int maxDistance(int[] nums1, int[] nums2) {
+        int maxDiff = 0;
+        int n1 = nums1.length;
+        for(int i = 0;i<n1;i++){
+            int target = nums1[i];
+            int pairIdx = getLastBSIdx(i, target, nums2);
+            maxDiff = Math.max(maxDiff, pairIdx - i);
+        }
+        return maxDiff;
+    }
+    public int getLastBSIdx(int left, int target, int[] nums2){
+        int n2 = nums2.length;
+        int right = n2-1;
+        if(left < n2 && target > nums2[left]) return left;
+        int ans = left;
+        while(left<=right){
+            int mid = left + (right - left)/2;
+            if(nums2[mid] >= target){
+                ans = mid;
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        return ans;
+    }
+}

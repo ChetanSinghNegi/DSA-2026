@@ -1,0 +1,38 @@
+https://leetcode.com/problems/longest-substring-of-all-vowels-in-order/description/
+
+O(n) S(1)
+
+class Solution {
+    public int longestBeautifulSubstring(String word) {
+        int currentLength = 1;       // Length of current substring
+        int maxLength = 0;           // Maximum valid substring length found
+        int distinctVowels = 1;      // Count of distinct vowels in order
+
+        for (int i = 1; i < word.length(); i++) {
+            char current = word.charAt(i);
+            char previous = word.charAt(i - 1);
+
+            if (current >= previous) {
+                // Continue the substring
+                if (current > previous) {
+                    distinctVowels++;
+                }
+                currentLength++;
+            } else {
+                // Reset when order breaks
+                if (distinctVowels == 5) {
+                    maxLength = Math.max(maxLength, currentLength);
+                }
+                distinctVowels = 1;
+                currentLength = 1;
+            }
+        }
+
+        // Final check in case the longest substring ends at the last character
+        if (distinctVowels == 5) {
+            maxLength = Math.max(maxLength, currentLength);
+        }
+
+        return maxLength;
+    }
+}

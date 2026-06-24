@@ -1,0 +1,52 @@
+https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/
+
+O(n) S(1)
+
+----------M1 with Map
+
+class Solution {
+    public int numberOfSubstrings(String s) {
+        HashMap<Character, Integer> hm = new HashMap<>();
+        int count = 0;
+        int left = 0;
+        int right = 0;
+        int n = s.length();
+
+        while(right < n){
+            char ch = s.charAt(right);
+            hm.put(ch, hm.getOrDefault(ch,0)+1);
+            while(hm.size()==3){
+                char leftChar = s.charAt(left);
+                if(hm.get(leftChar)>1) hm.put(leftChar, hm.get(leftChar)-1);
+                else hm.remove(leftChar);
+                count += n - right ;
+                left++;
+            } 
+            
+            right++;
+        }
+        return count;
+    }
+}
+
+----------M2 with Array
+
+class Solution {
+    public int numberOfSubstrings(String s) {
+        int n = s.length();
+        int[] freq = new int[3]; // for 'a', 'b', 'c'
+        int left = 0, count = 0;
+
+        for (int right = 0; right < n; right++) {
+            freq[s.charAt(right) - 'a']++;
+
+            // shrink window until it no longer contains all 3 chars
+            while (freq[0] > 0 && freq[1] > 0 && freq[2] > 0) {
+                count += n - right; // all substrings starting at left and ending >= right
+                freq[s.charAt(left) - 'a']--;
+                left++;
+            }
+        }
+        return count;
+    }
+}

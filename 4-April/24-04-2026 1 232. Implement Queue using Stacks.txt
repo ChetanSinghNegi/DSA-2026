@@ -1,0 +1,43 @@
+https://leetcode.com/problems/implement-queue-using-stacks/description
+O(n) S(n)
+
+class MyQueue {
+    Stack<Integer> mainStk;
+    Stack<Integer> helperStk;
+
+    public MyQueue() {
+        mainStk = new Stack<>();
+        helperStk = new Stack<>();
+    }
+    
+    public void push(int x) {// O(n)
+        while(mainStk.size()>0){
+            helperStk.push(mainStk.pop());
+        }
+        helperStk.push(x);
+        while(helperStk.size()>0){
+            mainStk.push(helperStk.pop());
+        }
+    }
+    
+    public int pop() { //O(1)
+        return mainStk.pop();
+    }
+    
+    public int peek() { //O(1)
+        return mainStk.peek();
+    }
+    
+    public boolean empty() {
+        return mainStk.size() == 0;
+    }
+}
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */

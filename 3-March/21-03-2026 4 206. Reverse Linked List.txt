@@ -1,0 +1,40 @@
+https://leetcode.com/problems/reverse-linked-list/
+
+Iteration Way: O(n) S(1)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        while(curr != null){
+            ListNode currNext = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = currNext;
+        }
+    }
+}
+	
+
+Recursive Way: O(n) S(rec-n, temp - 1)=> S(1)
+class Solution {
+	public ListNode reverseList(ListNode head) {
+        return helper(null, head);
+    }
+    public ListNode helper(ListNode prev, ListNode curr){
+        if(curr == null) return prev;
+
+        ListNode currNext = curr.next;
+        curr.next = prev;
+        return helper(curr, currNext);
+    }
+}

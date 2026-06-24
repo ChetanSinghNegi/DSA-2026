@@ -1,0 +1,38 @@
+https://leetcode.com/problems/kth-largest-sum-in-a-binary-tree/
+O( HeightLog(height) + n ) S(height) 
+class Solution {
+    public long kthLargestLevelSum(TreeNode root, int k) {
+        if(root == null) return -1;
+        List<Long> levelSum = new ArrayList<>();
+        // helper(0, root, levelSum);
+        int count = 1;
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        while(queue.size() > 0){
+            long currSum = 0;
+            while(count > 0){
+                TreeNode topEle = queue.remove();
+                currSum += (long)topEle.val;
+                if(topEle.left != null) queue.add(topEle.left);
+                if(topEle.right != null) queue.add(topEle.right);
+                count--;
+            }
+            count = queue.size();
+            levelSum.add(currSum);
+        }
+        if(k > levelSum.size()) return -1;
+        Collections.sort(levelSum);
+        return levelSum.get(levelSum.size() - k );
+    }
+    // public void helper(int level, TreeNode node, List<Long> levelSum){
+    //     if(node == null) return;
+    //     Long currLevelSum = levelSum.size() >= level+1 ? levelSum.get(level) + node.val : node.val;
+    //     if(levelSum.size() >= level+1){
+    //         levelSum.set(level, currLevelSum);
+    //     }else{
+    //         levelSum.add(currLevelSum);
+    //     } 
+    //     helper(level+1, node.left, levelSum);
+    //     helper(level+1, node.right, levelSum);
+    // }
+}

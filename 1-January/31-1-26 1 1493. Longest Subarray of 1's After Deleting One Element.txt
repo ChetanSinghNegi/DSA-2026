@@ -1,0 +1,23 @@
+https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/
+
+O(n) S(1)
+
+class Solution {
+    public int longestSubarray(int[] nums) {
+        int n = nums.length;
+        int maxLen = 0;
+        int start = 0;
+        int firstZero = -1;
+
+        for (int i = 0; i<n; i++){
+            int ele =nums[i];
+            if (ele == 0){
+                if(firstZero != -1) start = firstZero + 1;
+                firstZero = i;
+            }
+            maxLen = Math.max(maxLen, i - start);
+        }
+
+        return maxLen;
+    }
+}

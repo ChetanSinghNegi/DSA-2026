@@ -1,0 +1,22 @@
+https://leetcode.com/problems/move-zeroes/
+
+O(n) S(1)
+
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int zeroIdx = 0;
+        for(int nonZeroIdx = 0; nonZeroIdx < nums.length; nonZeroIdx++){
+            int ele = nums[nonZeroIdx];
+            if(ele!=0){
+                swap(zeroIdx, nonZeroIdx, nums);
+                zeroIdx++;
+            }
+        }
+
+    }
+    public void swap(int idx1, int idx2, int[] nums){
+        int ele1 = nums[idx1];
+        nums[idx1] = nums[idx2];
+        nums[idx2] = ele1;
+    }
+}

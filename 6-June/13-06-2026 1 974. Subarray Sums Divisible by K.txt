@@ -1,0 +1,21 @@
+https://leetcode.com/problems/subarray-sums-divisible-by-k/
+O(n) S(n)
+
+class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+        HashMap<Integer, Integer> freq = new HashMap<>();
+        int count=0, rem = 0;
+        freq.put(0,1);
+        for(int i = 0;i<nums.length;i++){
+            rem = (rem + nums[i] % k + k) % k;
+            if(freq.containsKey(rem)){
+                int val = freq.get(rem);
+                count += val;
+                freq.put(rem, val+1);
+            }else{
+                freq.put(rem, 1);
+            }
+        }
+        return count;
+    }
+}

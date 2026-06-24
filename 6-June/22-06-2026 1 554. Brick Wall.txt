@@ -1,0 +1,24 @@
+https://leetcode.com/problems/brick-wall/
+O(n) S(n)
+
+class Solution {
+    public int leastBricks(List<List<Integer>> wall) {
+        int len = wall.size(), maxFreq = 0;
+        HashMap<Long, Integer> freq = new HashMap<>();
+
+        for(int i = 0;i<len;i++){
+            List<Integer> horizonalBricks = wall.get(i);
+            int bre = horizonalBricks.size();
+            long sum = 0;
+            for(int j = 0;j<bre-1;j++){
+                int brick = horizonalBricks.get(j);
+                sum += (long)brick;
+                int currFreq = freq.getOrDefault(sum,0)+1;
+                freq.put(sum, currFreq);
+                maxFreq = Math.max(maxFreq, currFreq);
+            }
+        }
+        
+        return len - maxFreq;
+    }
+}

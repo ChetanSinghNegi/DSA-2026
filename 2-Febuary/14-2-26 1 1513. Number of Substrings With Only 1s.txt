@@ -1,0 +1,18 @@
+https://leetcode.com/problems/number-of-substrings-with-only-1s/description/
+
+O(n) S(1)
+
+class Solution {
+    public int numSub(String s) {
+        int st = 0, ed = 0, cnt = 0;
+        while(ed < s.length()){
+            char currChar = s.charAt(ed);
+            if(currChar == '0'){
+                st = ed+1;
+            }
+            cnt = cnt%1000000007 + (ed - st + 1)%1000000007;
+            ed++;
+        }
+        return cnt;
+    }
+}

@@ -1,0 +1,26 @@
+https://leetcode.com/problems/delete-node-in-a-bst/
+O(logn) S(1)
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root == null) return root;
+        if(root.val == key) {  //found key
+            if(root.left == null && root.right == null) return null; 
+            else if(root.left == null) return root.right;
+            else if(root.right == null) return root.left;
+            else{
+                int rightMinVal = findRightMinVal(root.right); //find right mininum value
+                root.val = rightMinVal; //replace current with right min value
+                root.right = deleteNode(root.right, rightMinVal); // go to right side and delete rightMinVal Node
+            }
+        }else if(root.val > key){
+            root.left = deleteNode(root.left, key);
+        }else{
+            root.right = deleteNode(root.right, key);
+        }
+        return root;
+    }
+    public int findRightMinVal(TreeNode root){
+        if(root.left == null) return root.val;
+        return findRightMinVal(root.left);
+    }
+}

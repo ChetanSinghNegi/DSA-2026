@@ -1,0 +1,57 @@
+https://leetcode.com/problems/count-number-of-nice-subarrays/description/
+
+M1) with HashMap and Prefix Sum
+O(n) S(n)
+class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        int n = nums.length;
+        int totalSubarraysCount = 0;
+        HashMap<Integer, Integer> freq = new HashMap<>();
+        freq.put(0,1);
+        int tillOddCount = 0;
+        
+        for(int i = 0; i<n;i++){
+            tillOddCount = tillOddCount + (nums[i] % 2 != 0 ? 1 : 0);
+            int requiredCount = tillOddCount - k;
+            int currSubarraysCount = freq.getOrDefault(requiredCount,0);
+            totalSubarraysCount += currSubarraysCount;
+            freq.put(tillOddCount, freq.getOrDefault(tillOddCount,0)+1);
+        }
+
+        return totalSubarraysCount;
+    }
+}
+
+
+M2) with Dynamic Sliding Window 
+O(n) S(1)
+class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        int n = nums.length;
+        int totalSubarraysCount = 0;
+        int tillOddCount = 0;
+        int prevCount = 0; // for finding upcoming subarray(after ed) with same oddCount
+        int st = 0, ed = 0;
+        while(ed < n){
+            if(nums[ed] % 2 != 0 ){
+                prevCount = 0; 
+                tillOddCount++;
+            }
+
+            if(tillOddCount == k){
+                while(st < n && nums[st] % 2 == 0){
+                    prevCount++;
+                    st++;
+                }
+                st++;
+                prevCount++;
+                tillOddCount--;
+            }
+
+            totalSubarraysCount += prevCount;
+            ed++;
+        }
+
+        return totalSubarraysCount;
+    }
+}

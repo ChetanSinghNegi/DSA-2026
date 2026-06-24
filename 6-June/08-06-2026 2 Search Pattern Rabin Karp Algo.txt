@@ -1,0 +1,41 @@
+https://www.geeksforgeeks.org/problems/search-pattern0205/1
+Avg-O(n+m) wrost-O(n*m) S(1)
+
+class Solution {
+    ArrayList<Integer> search(String pat, String txt) {
+        // code here
+        int totalChars = 256, mod = 101 ;
+        int txtLen = txt.length(), patLen = pat.length();
+        int patHashVal = 0, txtHashVal = 0;
+        ArrayList<Integer> ans = new ArrayList<>();
+        int highOrderDigitMultiplier = 1;
+        // 6---- 6 * d --- (6+k)*d*d ---- (6+k+l)*d*d*d
+        for(int i = 0;i<patLen;i++){
+            patHashVal = (totalChars * patHashVal + pat.charAt(i)) % mod;
+            txtHashVal = (totalChars * txtHashVal + txt.charAt(i)) % mod;
+        }
+        // highOrderDigitMultiplier = (int)(Math.pow(totalChars, patLen-1))%mod;
+        for(int i = 0;i<patLen-1;i++){
+            highOrderDigitMultiplier = (highOrderDigitMultiplier * totalChars) % mod;
+        }
+        
+        for(int i = 0;i<=txtLen - patLen;i++){
+            if(patHashVal == txtHashVal){
+                boolean match = true;
+                for(int j = 0; j<patLen;j++){
+                    if(txt.charAt(i+j) != pat.charAt(j)){
+                        match = false;
+                        break;
+                    }
+                }
+                if(match == true) ans.add(i);
+            }
+            if(i<txtLen-patLen){
+                txtHashVal = (totalChars * (txtHashVal - txt.charAt(i)*highOrderDigitMultiplier)
+                    + txt.charAt(i+patLen))% mod;
+                if(txtHashVal < 0) txtHashVal += mod;
+            }
+        }
+        return ans;
+    }
+}

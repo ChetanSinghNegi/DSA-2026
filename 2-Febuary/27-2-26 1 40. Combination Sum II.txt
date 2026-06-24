@@ -1,0 +1,43 @@
+https://leetcode.com/problems/combination-sum-ii/
+O(2^n) S(n + total_output_size)
+
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        HashMap<Integer, Integer> freq = new HashMap<>();
+        List<Integer> nonDuplicateList = new ArrayList<>();
+        for(int ele:candidates){
+            if(freq.containsKey(ele)){
+                freq.put(ele, freq.get(ele)+1);
+            }else{
+                freq.put(ele, 1);
+                nonDuplicateList.add(ele);
+            }
+        }
+        List<List<Integer>> combinations = new ArrayList<>();
+        List<Integer> combination = new ArrayList<>();
+        helper(0, freq, combination, combinations, target, nonDuplicateList);
+        return combinations;
+    }
+    public void helper(int idx, HashMap<Integer, Integer> freq, List<Integer> combination, List<List<Integer>> combinations, int target, List<Integer> nonDuplicateList){
+        if(target < 0) return;
+        if(idx == nonDuplicateList.size()){
+            if(target == 0){
+                List<Integer> baseList = new ArrayList<>(combination);
+                combinations.add(baseList);
+            }
+            return;
+        }
+        int currEle = nonDuplicateList.get(idx);
+        int currFreq = freq.get(currEle);
+        int updatedTarget = target;
+        helper(idx+1, freq, combination, combinations, updatedTarget, nonDuplicateList);
+        for(int i = 0;i<currFreq;i++){
+            combination.add(currEle);
+            updatedTarget -= currEle;
+            helper(idx+1, freq, combination, combinations, updatedTarget, nonDuplicateList);
+        }
+        for(int i = 0;i<currFreq;i++){
+            combination.remove(combination.size()-1);
+        }
+    }
+}

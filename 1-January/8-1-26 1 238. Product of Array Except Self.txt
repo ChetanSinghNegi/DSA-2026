@@ -1,0 +1,26 @@
+https://leetcode.com/problems/product-of-array-except-self/
+
+O(n) S(n)
+
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] prefixMulArrLeft = new int[n];
+        int[] prefixMulArrRight = new int[n];
+        for(int i = 0;i<n;i++){
+            int l2 = i - 1 >= 0 ?prefixMulArrLeft[i-1]:1;
+            int l1 = i - 1 >= 0 ? nums[i-1] :1;
+            prefixMulArrLeft[i] = l1 * l2;
+        }
+        for(int i = n-1;i>=0;i--){
+            int l2 = i + 1 < n ?prefixMulArrRight[i+1]:1;
+            int l1 = i + 1 < n ? nums[i+1] :1;
+            prefixMulArrRight[i] = l1 * l2;
+        }
+        int[] res = new int[n];
+        for(int i = 0;i<n;i++){
+            res[i] = prefixMulArrLeft[i] * prefixMulArrRight[i];
+        }
+        return res;
+    }
+}

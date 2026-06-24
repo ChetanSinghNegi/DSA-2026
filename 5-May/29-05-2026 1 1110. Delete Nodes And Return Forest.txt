@@ -1,0 +1,21 @@
+https://leetcode.com/problems/delete-nodes-and-return-forest/
+O(n) S(n)
+class Solution {
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        Set<Integer> deleteSet = new HashSet<>();
+        for (int val : to_delete) deleteSet.add(val);
+
+        List<TreeNode> ans = new ArrayList<>();
+        helper(root, true, deleteSet, ans);
+        return ans;
+    }
+
+    private TreeNode helper(TreeNode node, boolean parentDeleted, Set<Integer> deleteSet, List<TreeNode> ans) {
+        if(node == null) return null;
+        boolean deleteFlag = deleteSet.contains(node.val);
+        if(parentDeleted == true && deleteFlag == false ) ans.add(node); 
+        node.left = helper(node.left, deleteFlag, deleteSet, ans);
+        node.right = helper(node.right, deleteFlag, deleteSet, ans);
+        return deleteFlag == true ? null : node;
+    }
+}

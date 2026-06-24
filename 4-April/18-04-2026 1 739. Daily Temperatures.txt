@@ -1,0 +1,44 @@
+https://leetcode.com/problems/daily-temperatures/description/
+O(n) S(n)
+
+M1
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        Stack<Integer> ngIdx = new Stack<>();
+        int[] ans = new int[n];
+        ans[n-1] = 0;
+        for(int i = 0; i<n;i++){
+            int currTemp = temperatures[i];
+            while(ngIdx.size() > 0 && temperatures[ngIdx.peek()] < currTemp){
+                int topEle = ngIdx.pop();
+                ans[topEle] = i - topEle;
+            }
+            ngIdx.push(i);
+        }
+        return ans;
+    }
+}
+
+M2
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        Stack<Integer> ngIdx = new Stack<>();
+        int[] ans = new int[n];
+        for(int i = n-1;i>=0;i--){
+            int currTemp = temperatures[i];
+            while(ngIdx.size() > 0 && temperatures[ngIdx.peek()] <= currTemp){
+                ngIdx.pop();
+            }
+            if(ngIdx.size()>0) ans[i] = ngIdx.peek();
+            else ans[i] = i;
+            ngIdx.push(i);
+        }
+
+        for(int i= 0;i<n;i++){
+            ans[i] = ans[i] - i;
+        }
+        return ans;
+    }
+}

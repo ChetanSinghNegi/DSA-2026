@@ -1,0 +1,17 @@
+http://geeksforgeeks.org/problems/floyds-triangle1222/1
+
+O(n*n) S(1)
+
+// User function Template for Java
+class Solution {
+    static void printFloydTriangle(int n) {
+        // code here
+        int ctr = 1;
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<=i;j++){
+                System.out.print(ctr++ + " ");
+            }
+            System.out.println();
+        }
+    }
+}

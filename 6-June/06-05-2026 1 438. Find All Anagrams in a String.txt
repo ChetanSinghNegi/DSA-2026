@@ -1,0 +1,74 @@
+https://leetcode.com/problems/find-all-anagrams-in-a-string/description/
+M1) HashMap == O(n2) S(n)
+class Solution {
+    public boolean isAnagramFunc(HashMap<Character, Integer> hm1 , HashMap<Character, Integer> hm2){
+        if(hm1.size() != hm2.size()) return false;
+        for(char key: hm1.keySet()){
+            if(!hm1.get(key).equals(hm2.get(key))) return false;
+        }
+        return true;
+    }
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> ans = new ArrayList<>();
+        int pLen = p.length();
+        int sLen = s.length();
+        if(pLen > sLen) return ans;
+        HashMap<Character, Integer> pHm = new HashMap<>();
+        for(char ch: p.toCharArray()){
+            pHm.put(ch, pHm.getOrDefault(ch,0)+1);
+        }
+        int idx1 = 0, idx2 = pLen - 1;
+        HashMap<Character, Integer> subStrHm = new HashMap<>();
+        for(int i = 0;i<=idx2;i++){
+            char ch = s.charAt(i);
+            subStrHm.put(ch, subStrHm.getOrDefault(ch,0)+1);
+        }
+        
+        while(idx2 < sLen){
+            boolean isAnagram = isAnagramFunc(pHm, subStrHm);
+            if(isAnagram == true) ans.add(idx1);
+            char ch1 = s.charAt(idx1);
+            subStrHm.put(ch1, subStrHm.get(ch1)-1);
+            if(subStrHm.get(ch1) == 0) subStrHm.remove(ch1);
+            idx1++; 
+            idx2++;
+            if(idx2 < sLen) subStrHm.put(s.charAt(idx2),subStrHm.getOrDefault(s.charAt(idx2), 0)+1);
+        }
+        return ans;
+    }
+}
+
+
+M2) Array of character(26 size) == O(n2) S(n)
+class Solution {
+    public void populateArr(String str, int[] arr){
+        for(char ch: str.toCharArray()){
+            arr[ch-'a']++;
+        }
+    }
+    public boolean isAnagramFunc(int[] arr, int[] brr){
+        for(int i = 0;i<arr.length;i++){
+            if(arr[i] != brr[i]) return false;
+        }
+        return true;
+    }
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> ans = new ArrayList<>();
+        int pLen = p.length();
+        int sLen = s.length();
+        if(pLen > sLen) return ans;
+        int[] pArr = new int[26];
+        populateArr(p, pArr);
+        int idx1 = 0, idx2 = pLen;
+        int[] strArr; 
+        while(idx2 != sLen+1){
+            strArr = new int[26]; 
+            String str = s.substring(idx1, idx2);
+            populateArr(str, strArr);
+            boolean isAnagram = isAnagramFunc(pArr, strArr);
+            if(isAnagram) ans.add(idx1);
+            idx1++; idx2++;
+        }
+        return ans;
+    }
+}

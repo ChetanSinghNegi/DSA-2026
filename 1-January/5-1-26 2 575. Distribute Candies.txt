@@ -1,0 +1,16 @@
+https://leetcode.com/problems/distribute-candies/
+
+O(n) S(n)
+
+class Solution {
+    public int distributeCandies(int[] candyType) {
+        HashSet<Integer> hs = new HashSet<>();
+        for(int ele: candyType){
+            hs.add(ele);
+        }
+        int maxSlots = candyType.length/2;
+        int totalCandyType = hs.size();
+        int maxCandyTypePossible = maxSlots > totalCandyType ? totalCandyType : maxSlots;
+        return maxCandyTypePossible;
+    }
+}

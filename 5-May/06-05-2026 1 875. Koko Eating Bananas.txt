@@ -1,0 +1,31 @@
+https://leetcode.com/problems/koko-eating-bananas/
+O(nlog(maxEle)) S(1)
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int maxSpeed = 0;
+        for(int pile:piles){
+            maxSpeed = Math.max(maxSpeed, pile);
+        }
+        int minSpeed = 1, ansSpeed = maxSpeed;
+        while(minSpeed <= maxSpeed){
+            int currSpeed = minSpeed + (maxSpeed - minSpeed)/2;
+            boolean isBananaEatenFlag = isBananaEaten(currSpeed, h, piles);
+            if(isBananaEatenFlag == true) {
+                ansSpeed = currSpeed;
+                maxSpeed = currSpeed - 1;
+            }else{
+                minSpeed = currSpeed + 1;
+            }
+        }
+        return ansSpeed;
+    }
+    public boolean isBananaEaten(int currSpeed, int hr, int[] piles){
+        long currHr = 0;
+        for(int pile: piles){
+            currHr = currHr + (pile%currSpeed == 0 ? pile/currSpeed : (pile/currSpeed + 1));
+            if((long)hr < currHr) return false;
+        }
+        return (long)hr >= currHr;
+    }
+}

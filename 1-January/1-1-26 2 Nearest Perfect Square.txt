@@ -1,0 +1,17 @@
+https://www.geeksforgeeks.org/dsa/check-if-given-number-is-perfect-square-in-cpp/
+
+O(sqrt(n)) S(1)
+
+class Solution {
+    ArrayList<Integer> squareDifference(int n) {
+        // code here
+        double sqrtDouble = Math.round(Math.sqrt(n)) ;
+        int sqrt = (int)sqrtDouble;
+        int closestVal = sqrt*sqrt;
+        int diff = Math.abs(n - closestVal);
+        ArrayList<Integer> li = new ArrayList<>();
+        li.add(closestVal);
+        li.add(diff);
+        return li;
+    }
+}

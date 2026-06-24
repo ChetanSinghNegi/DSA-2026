@@ -1,0 +1,24 @@
+https://leetcode.com/problems/maximum-erasure-value/
+
+O(n) S(unique)
+
+class Solution {
+    public int maximumUniqueSubarray(int[] nums) {
+        int maxSum = 0, currSum = 0, n = nums.length , st = 0,  ed = 0;
+        int[] memo = new int[10001];
+        while(ed < n){
+            int ele = nums[ed];
+            while(memo[ele] != 0){
+                int prevEle = nums[st];
+                currSum -= prevEle;
+                memo[prevEle]--;
+                st++;
+            }
+            memo[ele] = 1;
+            currSum += ele;
+            maxSum = Math.max(maxSum, currSum);
+            ed++;
+        }
+        return maxSum;
+    }
+}

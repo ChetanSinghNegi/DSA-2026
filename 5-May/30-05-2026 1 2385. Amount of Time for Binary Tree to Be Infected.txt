@@ -1,0 +1,56 @@
+https://leetcode.com/problems/amount-of-time-for-binary-tree-to-be-infected/
+O(n) S(rec(h) + aux(1))
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int maxTime;
+    class Pair{
+        int time;
+        boolean hasFound;
+        Pair(int time, boolean hasFound){
+            this.time = time;
+            this.hasFound = hasFound;
+        }
+    }
+    public int amountOfTime(TreeNode root, int start) {
+        maxTime = 0;
+        Pair pair = helper(root, start);
+        return maxTime;
+    }
+    public Pair helper(TreeNode root, int start){
+        Pair currPair = new Pair(0, false);
+        if(root == null){
+            return currPair;
+        }
+        Pair leftPair = helper(root.left, start);
+        Pair rightPair = helper(root.right, start);
+        if(root.val == start){
+            currPair.hasFound = true;
+            currPair.time = 1;
+            maxTime = Math.max(leftPair.time, rightPair.time);
+        }else{
+            if(leftPair.hasFound == true || rightPair.hasFound == true){
+                currPair.hasFound = true;
+                maxTime = Math.max(maxTime, leftPair.time+rightPair.time);
+                // if target found so time would be time to target + 1
+                currPair.time = leftPair.hasFound == true ? leftPair.time+1 : rightPair.time+1;/
+            }else{
+                currPair.time = Math.max(leftPair.time, rightPair.time) + 1;
+            }
+        }
+        return currPair;
+    }
+}

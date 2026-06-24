@@ -1,0 +1,26 @@
+https://leetcode.com/problems/fruit-into-baskets/
+
+O(n) S(1)
+
+class Solution {
+    public int totalFruit(int[] fruits) {
+        int st = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        int cnt = 0;
+        for(int itr = 0; itr< fruits.length; itr++){
+            int fruit = fruits[itr];
+            hm.put(fruit, hm.getOrDefault(fruit,0)+1);
+            while(hm.size()>2 && st < fruits.length){
+                int currFruit = fruits[st];
+                if(hm.get(currFruit)>1){
+                    hm.put(currFruit, hm.get(currFruit)-1);
+                }else{
+                    hm.remove(currFruit);
+                }
+                st++;
+            }
+            cnt = Math.max(cnt, itr - st + 1);           
+        }
+        return cnt;
+    }
+}

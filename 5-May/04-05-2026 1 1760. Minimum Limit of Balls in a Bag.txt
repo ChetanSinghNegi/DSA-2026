@@ -1,0 +1,25 @@
+https://leetcode.com/problems/minimum-limit-of-balls-in-a-bag/
+O(nlogn) S(1)
+
+class Solution {
+    public int minimumSize(int[] nums, int maxOperations) {
+        int minPenality = 1, maxPenality = 0;
+        for(int num:nums) maxPenality = Math.max(maxPenality, num);
+        int ans = maxPenality;
+        while(minPenality <= maxPenality){
+            int currPenality = minPenality + (maxPenality - minPenality)/2;
+            int currOps = 0;
+            for(int num:nums){
+                currOps += (num-1)/currPenality ;
+                if(currOps > maxOperations) break;
+            }
+            if(currOps <= maxOperations) {
+                ans = currPenality;
+                maxPenality = currPenality - 1;
+            }else{
+                minPenality = currPenality + 1;
+            }
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,46 @@
+https://www.geeksforgeeks.org/problems/top-view-of-binary-tree/1
+O(n) S(n)
+/*
+class Node {
+    int data;
+    Node left, right;
+
+    Node(int val) {
+        this.data = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+*/
+class Solution {
+    class Pair{
+        Node node;
+        int horizontalDis;
+        Pair(Node node, int horizontalDis ){
+            this.horizontalDis = horizontalDis;
+            this.node = node;
+        }
+    }
+    public ArrayList<Integer> topView(Node root) {
+        ArrayList<Integer> ans = new ArrayList<Integer>();
+        HashSet<Integer> hs = new HashSet<>();
+        Queue<Pair> queue = new ArrayDeque<>();
+        queue.add(new Pair(root, 0));
+        int count = 1;
+        while(queue.size() > 0){
+            while(count > 0){
+                Pair top = queue.remove();
+                if(hs.contains(top.horizontalDis) == false){
+                    hs.add(top.horizontalDis);
+                    if(top.horizontalDis < 0) ans.add(0, top.node.data);
+                    else ans.add(top.node.data);
+                }
+                if(top.node.left != null) queue.add(new Pair(top.node.left, top.horizontalDis - 1));
+                if(top.node.right != null) queue.add(new Pair(top.node.right, top.horizontalDis + 1));
+                count--;
+            }
+            count = queue.size();
+        }
+        return ans;
+    }
+}

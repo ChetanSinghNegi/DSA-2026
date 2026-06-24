@@ -1,0 +1,26 @@
+https://leetcode.com/problems/deepest-leaves-sum/
+O(n) S( Rec(h) + Aux(1) )
+
+public class Pair{
+    int level;
+    int sum;
+    Pair(int sum, int level){
+        this.level = level;
+        this.sum = sum;
+    }
+}
+class Solution {
+    public int deepestLeavesSum(TreeNode root) {
+        Pair ans = helper(root, 0);
+        return ans.sum;
+    }
+    public Pair helper(TreeNode node, int level){
+        if(node == null) {return new Pair(0, 0);}
+        if(node.left == null && node.right == null) {return new Pair(node.val, level);}
+        Pair leftPair = helper(node.left, level+1);
+        Pair rightPair = helper(node.right, level+1);
+        if(leftPair.level == rightPair.level) {return new Pair( leftPair.sum + rightPair.sum, leftPair.level);}
+        else if(leftPair.level > rightPair.level){ return leftPair;}
+        return rightPair;
+    }
+}

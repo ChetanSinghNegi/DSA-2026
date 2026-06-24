@@ -1,0 +1,48 @@
+https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/
+O(n) S(n)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int count;
+    public int countPairs(TreeNode root, int distance) {
+        count = 0;
+        helper(root, distance);
+        return count;
+    }
+    public List<Integer> helper(TreeNode root, int distance){
+        List<Integer> currList = new ArrayList<>();
+        if(root == null){
+            return currList;
+        }
+        if(root.left == null && root.right == null) {
+            currList.add(1);
+            return currList;
+        }
+        List<Integer> leftList = helper(root.left, distance);
+        List<Integer> rightList = helper(root.right, distance);
+        for(int l: leftList){
+            if(l <= distance) currList.add(l+1);
+            for(int r: rightList){
+                if(l + r <= distance) count+=1;
+            }
+        }
+        for(int r:rightList){
+            if(r<=distance) currList.add(r+1);
+        }
+        return currList;
+    }
+
+}

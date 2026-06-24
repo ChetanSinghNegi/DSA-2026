@@ -1,0 +1,26 @@
+https://leetcode.com/problems/path-sum-ii/
+O(n) S(rec(height) + Aux(1))
+
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> ans = new ArrayList<>();
+        helper(root, 0, targetSum, new ArrayList<>(), ans);
+        return ans;
+    }
+    public void helper(TreeNode root, int sum, int targetSum, List<Integer> currAns, List<List<Integer>> ans){
+        if(root == null) return;
+        sum += root.val;
+        if(root.left == null && root.right == null){
+            if(sum == targetSum){
+                currAns.add(root.val);
+                ans.add(new ArrayList<>(currAns));
+                currAns.remove(currAns.size()-1);
+            }
+            return;
+        }
+        currAns.add(root.val);
+        helper(root.left, sum, targetSum, currAns, ans);
+        helper(root.right, sum, targetSum, currAns, ans);
+        currAns.remove(currAns.size()-1);
+    }
+}

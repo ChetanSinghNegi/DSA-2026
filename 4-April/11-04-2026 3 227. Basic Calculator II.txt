@@ -1,0 +1,51 @@
+https://leetcode.com/problems/basic-calculator-ii/
+O(n) S(n)
+
+class Solution {
+    public int calculate(String s) {
+        Stack<Integer> numSt = new Stack<>();
+        Stack<Character> opSt = new Stack<>();
+        int i = 0;
+        while(i<s.length()){
+            char ch = s.charAt(i);
+            if(ch == ' ') {i++;continue;}
+            else if(ch >= '0' && ch <='9'){
+                int stIdx = i;
+                while(i<s.length() && s.charAt(i) >= '0' && s.charAt(i) <='9'){
+                    i++;
+                }
+                String numStr = s.substring(stIdx, i);
+                numSt.push(Integer.parseInt(numStr));
+            } 
+            else{
+                while(opSt.size() > 0 && precedence(opSt.peek()) >= precedence(ch)){
+                    int n2 = numSt.pop();
+                    int n1 = numSt.pop();
+                    char op = opSt.pop();
+                    int res = calculate(n1, n2, op);
+                    numSt.push(res);
+                }
+                opSt.push(ch);
+                i++;
+            }
+        }
+        while(opSt.size() > 0){
+            int n2 = numSt.pop();
+            int n1 = numSt.pop();
+            char op = opSt.pop();
+            int res = calculate(n1, n2, op);
+            numSt.push(res);
+        }
+        return numSt.pop();
+    }
+    public int precedence(char op){
+        if(op == '*' || op == '/') return 2;
+        return 1;
+    }
+    public int calculate(int n1, int n2, char ch){
+        if(ch == '/') return n1/n2;
+        else if(ch == '*') return n1*n2;
+        else if(ch == '-') return n1-n2;
+        return n1 + n2;
+    }
+}

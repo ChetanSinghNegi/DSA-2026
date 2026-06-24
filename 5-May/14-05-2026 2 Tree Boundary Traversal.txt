@@ -1,0 +1,51 @@
+https://www.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1
+O(n) S( Rec(n) + Aux(1))
+
+/*
+Definition for Node
+class Node {
+    int data;
+    Node left, right;
+
+    Node(int val) {
+        data = val;
+        left = right = null;
+    }
+}
+*/
+
+class Solution {
+    ArrayList<Integer> boundaryTraversal(Node root) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        if(root == null) return ans;
+        if(!isLeafNode(root)) ans.add(root.data);
+        collectLeftBoundary(root.left, ans);
+        collectLeafBoundary(root, ans);
+        collectRightBoundary(root.right, ans);
+        return ans;
+    }
+    public boolean isLeafNode(Node node){
+        return node.left == null && node.right == null;
+    }
+    public void collectLeftBoundary(Node root, ArrayList<Integer> ans){
+        if(root == null || isLeafNode(root)) return;
+        ans.add(root.data);
+        if(root.left != null){
+            collectLeftBoundary(root.left,ans);
+        }else{
+            collectLeftBoundary(root.right,ans);  
+        }
+    }
+    public void collectLeafBoundary(Node root, ArrayList<Integer> ans){
+        if(root == null) return;
+        if(isLeafNode(root)) ans.add(root.data);
+        collectLeafBoundary(root.left,ans);
+        collectLeafBoundary(root.right,ans);
+    }
+    public void collectRightBoundary(Node root, ArrayList<Integer> ans){
+        if(root == null || isLeafNode(root)) return;
+        if (root.right != null) collectRightBoundary(root.right, ans);
+        else  collectRightBoundary(root.left, ans);
+        ans.add(root.data);
+    }
+}

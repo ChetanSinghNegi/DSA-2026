@@ -1,0 +1,36 @@
+https://leetcode.com/problems/most-beautiful-item-for-each-query/
+O(nlogn + qlogn) S(1)
+
+class Solution {
+    public int[] maximumBeauty(int[][] items, int[] queries) {
+
+        Arrays.sort(items, (a, b) -> a[0] - b[0]);
+        for (int i = 1; i < items.length; i++) {
+            items[i][1] = Math.max(items[i][1], items[i - 1][1]);
+        }
+
+        int[] out = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            out[i] = binarySearch(items, queries[i]);
+        }
+        return out;
+
+    }
+
+    public int binarySearch(int[][] items, int queries) {
+
+        int left = 0;
+        int right = items.length - 1;
+        int ans = 0;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (items[mid][0] <= queries) {
+                ans = items[mid][1];
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return ans;
+    }
+}

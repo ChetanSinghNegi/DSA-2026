@@ -1,0 +1,20 @@
+https://leetcode.com/problems/optimal-partition-of-string/
+O(n) S(n)
+class Solution {
+    public int partitionString(String s) {
+        int itr = 0, count = 0;
+        HashSet<Character> hs = new HashSet<>();
+        while(itr < s.length()){
+            char ch = s.charAt(itr);
+            if(hs.contains(ch)==true){
+                hs = new HashSet<>();
+                count++;
+            }else{
+                hs.add(ch);
+                itr++;
+            }
+        }
+        if(hs.size() > 0)count++;
+        return count;
+    }
+}

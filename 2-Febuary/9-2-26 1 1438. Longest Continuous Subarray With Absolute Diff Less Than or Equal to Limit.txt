@@ -1,0 +1,40 @@
+https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
+
+O(n) S(n)
+
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        Deque<Integer> maxQueue = new LinkedList<>();
+        Deque<Integer> minQueue = new LinkedList<>();
+        int cnt = 0, st = 0, ed = 0;
+        while(ed < nums.length){
+            int ele = nums[ed];
+
+            // if current element is largest so all later subarray will have this as the largest. Hence removing smaller elements of heap
+            while(maxQueue.size() > 0 && ele > maxQueue.peekLast()){
+                maxQueue.removeLast();
+            }
+            maxQueue.addLast(ele);
+
+            // if current element is smallest so all later subarray will have this as the smallest. Hence removing greater elements of heap
+            while(minQueue.size() > 0 && ele < minQueue.peekLast()){
+                minQueue.removeLast();
+            }
+            minQueue.addLast(ele);
+
+            while(maxQueue.peekFirst() - minQueue.peekFirst() > limit){
+                int stEle = nums[st];
+                if(maxQueue.size()>0 && stEle == maxQueue.getFirst()){
+                    maxQueue.removeFirst();
+                }
+                if(minQueue.size()>0 && stEle == minQueue.getFirst()){
+                    minQueue.removeFirst();
+                }
+                st++;
+            }
+            cnt = Math.max(cnt, ed - st + 1);
+            ed++;
+        }
+        return cnt;
+    }
+}

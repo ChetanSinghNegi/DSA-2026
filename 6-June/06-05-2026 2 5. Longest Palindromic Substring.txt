@@ -1,0 +1,45 @@
+https://leetcode.com/problems/longest-palindromic-substring/
+
+M1) O(n3) S(n) Substring Way
+class Solution {
+    public boolean isPalindromicFunc(String str){
+        int st = 0, ed = str.length()-1;
+        while(st<ed){
+            if(str.charAt(st) != str.charAt(ed)) return false;
+            st++; ed--;
+        }
+        return true;
+    }
+    public String longestPalindrome(String s) {
+        String ans = "";
+        for(int i = 0;i<s.length();i++){
+            for(int j = i+1;j<=s.length();j++){
+                String curr = s.substring(i, j);
+                boolean isPalindromic = isPalindromicFunc(curr);
+                if(isPalindromic == true && curr.length() > ans.length()) ans = curr;
+            }
+        }
+        return ans;
+    }
+}
+
+M2) O(n2) S(n) Expand around middle
+class Solution {
+    public String expandFromCenter(String str, int st, int ed){
+        int n = str.length();
+        while(st >= 0 && ed < n && str.charAt(st) == str.charAt(ed)){
+            st--; ed++;
+        }
+        return str.substring(st+1, ed);
+    }
+    public String longestPalindrome(String s) {
+        String max = "";
+        for(int i=0;i<s.length();i++){
+            String odd = expandFromCenter(s, i, i);
+            String even = expandFromCenter(s, i, i+1);
+            if(odd.length() > max.length()) max = odd;
+            if(even.length() > max.length()) max = even;
+        }
+        return max;
+    }
+}

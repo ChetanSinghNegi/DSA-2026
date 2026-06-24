@@ -1,0 +1,58 @@
+https://leetcode.com/problems/maximum-product-of-first-and-last-elements-of-a-subsequence/
+O(n) S(n)
+
+class Solution {
+    class Pair{
+        int leftMin;
+        int rightMin;
+        int leftMax;
+        int rightMax;
+        Pair(int leftMin, int rightMin, int leftMax, int rightMax){
+            this.leftMin = leftMin;
+            this.rightMin = rightMin;
+            this.leftMax = leftMax;
+            this.rightMax = rightMax;
+        }
+    }
+    public long maximumProduct(int[] nums, int m) {
+        int leftMin = Integer.MAX_VALUE, rightMin = Integer.MAX_VALUE, leftMax = Integer.MIN_VALUE, n= nums.length, rightMax = Integer.MIN_VALUE;
+        Pair[] pairArr = new Pair[n];
+        for(int st = 0;st<n;st++){
+            leftMin = Math.min(leftMin, nums[st]);
+            leftMax = Math.max(leftMax, nums[st]);
+            pairArr[st] = new Pair(leftMin, 0, leftMax, 0);    
+        }
+        for(int ed = n-1;ed >= 0;ed--){
+            rightMin = Math.min(rightMin, nums[ed]);
+            rightMax = Math.max(rightMax, nums[ed]);
+            pairArr[ed].rightMin = rightMin;
+            pairArr[ed].rightMax = rightMax;
+        }
+        long maxProduct = Long.MIN_VALUE;
+        for(int i = 0;i<=n-m;i++){
+            Pair pair1 = pairArr[i];
+            Pair pair2 = pairArr[i+m-1];
+            maxProduct = Math.max(maxProduct, (long)pair1.leftMin * (long)pair2.rightMin);
+            maxProduct = Math.max(maxProduct, (long)pair1.leftMax * (long)pair2.rightMax);
+        }
+        return maxProduct;
+
+    }
+}
+
+
+O(n) S(1)
+class Solution {
+    public long maximumProduct(int[] nums, int m) {
+        int minTillI = Integer.MAX_VALUE, maxTillI = Integer.MIN_VALUE, n = nums.length;
+        long ans = Long.MIN_VALUE;
+        for(int j = m-1;j<n;j++){
+            int i = j-m+1;
+            int curr = nums[j], prev = nums[i];
+            minTillI = Math.min(minTillI, prev);
+            maxTillI = Math.max(maxTillI, prev);
+            ans = Math.max(ans, Math.max((long)curr* minTillI, (long)curr*maxTillI));
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,32 @@
+https://www.geeksforgeeks.org/dsa/evaluation-prefix-expressions/
+
+class Solution {
+    
+    public int calculate(int n1, int n2, char ch){
+        if(ch == '/') return n1/n2;
+        else if(ch == '*') return n1*n2;
+        else if(ch == '-') return n1-n2;
+        else if(ch == '^') return (int)Math.pow(n1, n2);
+        return n1 + n2;
+    }
+    public boolean isOperator(String op){
+        if(op.equals("+") || op.equals("-") || op.equals("/") || op.equals("*") || op.equals("^"))return true;
+        return false;
+    }
+    public int evaluatePrefix(String[] arr) {
+        Stack<Integer> mainStk = new Stack<>();
+        for(int i = arr.length - 1;i>= 0;i--){
+            String str = arr[i];
+            if(!isOperator(str)){
+                mainStk.push(Integer.parseInt(str));
+            }else{
+                int n1 = mainStk.pop();
+                int n2 = mainStk.pop();
+                char op = str.charAt(0);
+                int res = calculate(n1, n2, op);
+                mainStk.push(res);
+            }
+        }
+        return mainStk.pop();
+    }
+}

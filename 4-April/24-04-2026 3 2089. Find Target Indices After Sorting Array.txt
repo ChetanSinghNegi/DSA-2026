@@ -1,0 +1,32 @@
+https://leetcode.com/problems/find-target-indices-after-sorting-array/
+O(n) S(1)
+
+class Solution {
+    public List<Integer> targetIndices(int[] nums, int target) {
+        List<Integer> answer = new ArrayList<>();
+        Arrays.sort(nums);
+        int n = nums.length;
+        int left = 0, right = n-1;
+        while(left<=right){
+            int mid = left+(right-left)/2;
+            if(nums[mid] == target){
+                left = mid;
+                right = mid+1;
+                while(left >= 0 && nums[left] == target){
+                    left--;
+                }
+                while(right < n && nums[right] == target){
+                    right++;
+                }
+                for(int i = left+1; i<right;i++){
+                    answer.add(i);
+                }
+                break;
+            }else if(nums[mid] > target){
+                right = mid - 1;
+            }else left = mid+1;
+        }
+        return answer;
+    }
+    public 
+}

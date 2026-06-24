@@ -1,0 +1,31 @@
+https://leetcode.com/problems/letter-case-permutation/
+O(2^n)  S( rec - n , temp - 1) => S(1)
+
+class Solution {
+    public List<String> letterCasePermutation(String s) {
+        List<String> result = new ArrayList<>();
+        helper(0, new StringBuilder(), s, result);
+        return result;
+    }
+    public void helper(int idx, StringBuilder sb, String s, List<String> result){
+        if(idx == s.length()){
+            result.add(sb.toString()); // O(n) only at leaf
+            return;
+        }
+        char currChar = s.charAt(idx);
+        if(Character.isDigit(currChar)){
+            sb.append(currChar);
+            helper(idx+1, sb, s, result);
+            sb.deleteCharAt(sb.length()-1);
+        }
+        else{
+            sb.append(Character.toUpperCase(currChar));
+            helper(idx+1, sb, s, result);
+            sb.deleteCharAt(sb.length()-1);
+
+            sb.append(Character.toLowerCase(currChar));
+            helper(idx+1, sb, s, result);
+            sb.deleteCharAt(sb.length()-1);
+        }
+    }
+}

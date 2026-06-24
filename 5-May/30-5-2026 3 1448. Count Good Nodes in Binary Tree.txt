@@ -1,0 +1,17 @@
+https://leetcode.com/problems/count-good-nodes-in-binary-tree/
+
+O(n) S( rec(h) + aux(1) )
+class Solution {
+    int count;
+    public int goodNodes(TreeNode root) {
+        count = 0;
+        helper(root, -100001);
+        return count;
+    }
+    public void helper(TreeNode node, int max){
+        if(node == null ) return;
+        if(node.val >= max) count++;
+        helper(node.left, Math.max(max, node.val));
+        helper(node.right, Math.max(max, node.val));
+    }
+}

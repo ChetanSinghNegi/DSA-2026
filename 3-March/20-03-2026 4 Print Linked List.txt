@@ -1,0 +1,33 @@
+https://www.geeksforgeeks.org/problems/print-linked-list-elements/1
+
+O(n) S(1)
+
+/*
+class Node {
+    int data;
+    Node next;
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}*/
+
+class Solution { 
+    public ArrayList<Integer> printList(Node head) {
+        // code here
+        ArrayList<Integer> al = new ArrayList<>();
+        // Node temp = head;
+        // while(temp!=null){
+        //     al.add(temp.data);
+        //     temp = temp.next;
+        // }
+        // return al;
+        helper(head, al);
+        return al;
+    }
+    public void helper(Node n, ArrayList<Integer> al){
+        if(n == null) return;
+        al.add(n.data);
+        helper(n.next, al);
+    }
+}

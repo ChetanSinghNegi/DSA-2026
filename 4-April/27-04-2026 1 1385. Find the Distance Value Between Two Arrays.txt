@@ -1,0 +1,16 @@
+https://leetcode.com/problems/find-the-distance-value-between-two-arrays/
+O(n2) S(1)
+
+class Solution {
+    public int findTheDistanceValue(int[] arr1, int[] arr2, int d) {
+        int totalDistance = 0;
+        for(int ele1: arr1){
+            boolean isValid = true;
+            for(int ele2: arr2){
+                if(Math.abs(ele1 - ele2) <= d) {isValid = false; break;}
+            }
+            if(isValid) totalDistance++;
+        }
+        return totalDistance;
+    }
+}

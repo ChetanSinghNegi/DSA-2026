@@ -1,0 +1,23 @@
+https://leetcode.com/problems/set-mismatch/
+
+O(n) S(n)
+
+class Solution {
+    public int[] findErrorNums(int[] nums) {
+        int n = nums.length;
+        int repeatingEle = 0;
+        HashSet<Integer> hs = new HashSet<>();
+        for(int ele:nums){
+            if(hs.contains(ele)) repeatingEle = ele;
+            hs.add(ele);
+        }
+        int eleMissing = 0;
+        for(int i = 1;i<=n;i++){
+            if(!hs.contains(i)){
+                eleMissing = i;
+                break;
+            } 
+        }
+        return new int[]{repeatingEle, eleMissing};
+    }
+}

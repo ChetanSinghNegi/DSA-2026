@@ -1,0 +1,26 @@
+https://www.geeksforgeeks.org/problems/linked-list-insertion-1587115620/1
+O(n) S(1)
+
+/*
+class Node{
+    int data;
+    Node next;
+
+    Node(int x){
+        data = x;
+        next = null;
+    }
+}
+*/
+class Solution {
+    public Node insertAtEnd(Node head, int x) {
+        Node tailNode = new Node(x);
+        if(head == null) return tailNode;
+        Node currTail = head;
+        while(currTail != null && currTail.next != null){
+            currTail = currTail.next;
+        }
+        currTail.next = tailNode;
+        return head;
+    }
+}

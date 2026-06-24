@@ -1,0 +1,15 @@
+https://leetcode.com/problems/sum-root-to-leaf-numbers/
+O(n) S(Rec(h) Aux(1))
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        return helper(0, root);
+    }
+    public int helper(int currSum, TreeNode root){
+        if(root == null) return 0;
+        currSum = currSum * 10 + root.val;
+        if(root.left == null && root.right == null) return currSum; //leaf node
+        int leftSum = helper(currSum, root.left);
+        int rightSum = helper(currSum, root.right);
+        return leftSum + rightSum;
+    }
+}

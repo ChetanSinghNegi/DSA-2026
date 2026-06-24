@@ -1,0 +1,44 @@
+https://leetcode.com/problems/binary-subarrays-with-sum/description/
+
+M1) O(n) S(n) With PSA + HashMap
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        int prefixSum = 0, res = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        hm.put(0,1);
+        for(int i = 0;i<nums.length;i++){
+            int ele = nums[i];
+            prefixSum += ele;
+            int target = prefixSum - goal;
+            if(hm.containsKey(target)){
+                res += hm.get(target);
+            }
+            hm.put(prefixSum, hm.getOrDefault(prefixSum, 0)+1);
+        }
+        return res;
+    }
+}
+
+M2) O(n) S(1) with Dynamic Window Sliding
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        return dynamicSlidingWindow(goal,nums) - dynamicSlidingWindow(goal-1, nums);
+    }
+
+    public int dynamicSlidingWindow(int goal, int[] nums){
+        if(goal<0) return 0;
+        int sum = 0, res = 0;
+        int st = 0, ed = 0;
+        while(ed < nums.length){
+            int ele = nums[ed];
+            sum += ele;
+            while( st < nums.length && sum > goal){
+                int prevEle = nums[st++];
+                sum -= prevEle;
+            }
+            res += ed - st + 1;
+            ed++;
+        }
+        return res;
+    }
+}

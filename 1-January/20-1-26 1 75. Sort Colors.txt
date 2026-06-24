@@ -1,0 +1,32 @@
+https://leetcode.com/problems/sort-colors/
+
+O(n) S(1)
+
+class Solution {
+
+    public void swap(int idx1, int idx2, int[] nums){
+        int ele1 = nums[idx1];
+        nums[idx1] = nums[idx2];
+        nums[idx2] = ele1;
+    }
+
+// Dutch National Flag Algorithm
+    public void sortColors(int[] nums) {
+        int n = nums.length;
+        int s1 = 0; //starting of 1
+        int itr = 0; 
+        int s2 = n-1; // starting of 2
+        while(itr <= s2){
+            int ele =nums[itr];
+            if(ele == 0){
+                swap(s1, itr, nums);
+                s1++; itr++;
+            }else if( ele == 2){
+                swap(s2, itr,nums);
+                s2--;
+            }else{
+                itr++;
+            }
+        }
+    }
+}

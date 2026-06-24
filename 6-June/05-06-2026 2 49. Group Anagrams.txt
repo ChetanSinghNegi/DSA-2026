@@ -1,0 +1,21 @@
+https://leetcode.com/problems/group-anagrams/
+O( n * ( slength*log(sLength) ) ) S(n)
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> ans = new ArrayList<>();
+        HashMap<String, List<String>> hm = new HashMap<>();
+        for(String str: strs){
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            String sortedStr = new String(chars);
+            if(!hm.containsKey(sortedStr)){
+                hm.put(sortedStr,new ArrayList<>());
+            }
+            hm.get(sortedStr).add(str);
+        }
+        for(List<String> ls: hm.values()){
+            ans.add(ls);
+        }
+        return ans;
+    }
+}

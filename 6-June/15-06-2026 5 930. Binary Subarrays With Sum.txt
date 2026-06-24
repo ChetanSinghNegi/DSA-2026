@@ -1,0 +1,19 @@
+https://leetcode.com/problems/binary-subarrays-with-sum/
+O(n) S(1)
+
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        int currSum = 0, count = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        hm.put(0,1);
+        for(int i = 0;i<nums.length;i++){
+            currSum += nums[i];
+            int need = currSum - goal;
+            if(hm.containsKey(need)){
+                count += hm.get(need);
+            }
+            hm.put(currSum, hm.getOrDefault(currSum, 0)+1);
+        }
+        return count;
+    }
+}

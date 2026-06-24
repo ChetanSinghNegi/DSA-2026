@@ -1,0 +1,21 @@
+https://leetcode.com/problems/partition-array-into-k-distinct-groups/
+
+O(n) S(n)
+
+class Solution {
+    public boolean partitionArray(int[] nums, int k) {
+        if(nums.length % k != 0) return false;
+        int maxGroups = nums.length / k;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for(int ele: nums){
+            if(hm.containsKey(ele)){
+                int currVal = hm.get(ele) + 1;
+                if(currVal > maxGroups) return false;
+                hm.put(ele, currVal);
+            }else{
+                hm.put(ele, 1);
+            }
+        }
+        return true;
+    }
+}

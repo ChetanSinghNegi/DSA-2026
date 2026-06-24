@@ -1,0 +1,19 @@
+https://leetcode.com/problems/product-of-array-except-self/
+O(n) S(n)
+
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int mul1 = 1, mul2 = 1, n = nums.length;
+        int[] pma = new int[n]; int[] sma = new int[n]; int[] ans = new int[n];
+        for(int i = 0;i<n;i++){
+            pma[i] = mul1;
+            sma[n-i-1] = mul2;
+            mul1 = mul1 * nums[i];
+            mul2 = mul2 * nums[n-i-1];
+        }
+        for(int i = 0;i<n;i++){
+            ans[i] = pma[i] * sma[i];
+        }
+        return ans;
+    }
+}

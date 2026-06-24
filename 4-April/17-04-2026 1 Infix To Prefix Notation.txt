@@ -1,0 +1,69 @@
+https://www.geeksforgeeks.org/dsa/convert-infix-prefix-notation/
+
+import java.util.*;
+
+class Solution {
+
+    // Function to return precedence of operators
+    public int precedence(char ch) {
+        if (ch == '^') return 3;
+        else if (ch == '/' || ch == '*') return 2;
+        else if (ch == '+' || ch == '-') return 1;
+        else return 0; // for '('
+    }
+
+    // Function to check if operator is right-associative
+    public boolean isRightAssociative(char ch) {
+        return ch == '^';
+    }
+
+    public String infixToPrefix(String s) {
+        Stack<String> operandStack = new Stack<>();
+        Stack<Character> operatorStack = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+            // If operand (a-z or A-Z)
+            if (Character.isLetterOrDigit(ch)) {
+                operandStack.push(String.valueOf(ch));
+            }
+            else if (ch == '(') {
+                operatorStack.push(ch);
+            }
+            else if (ch == ')') {
+                while (!operatorStack.isEmpty() && operatorStack.peek() != '(') {
+                    String op2 = operandStack.pop();
+                    String op1 = operandStack.pop();
+                    char op = operatorStack.pop();
+                    String res = op + op1 + op2;
+                    operandStack.push(res);
+                }
+                operatorStack.pop(); // remove '('
+            }
+            // Operator
+            else {
+                while (!operatorStack.isEmpty() &&
+                       operatorStack.peek() != '(' &&
+                       (precedence(operatorStack.peek()) > precedence(ch) ||
+                       (precedence(operatorStack.peek()) == precedence(ch) && !isRightAssociative(ch)))) {
+                    String op2 = operandStack.pop();
+                    String op1 = operandStack.pop();
+                    char op = operatorStack.pop();
+                    String res = op + op1 + op2;
+                    operandStack.push(res);
+                }
+                operatorStack.push(ch);
+            }
+        }
+
+        // Pop remaining operators
+        while (!operatorStack.isEmpty()) {
+            String op2 = operandStack.pop();
+            String op1 = operandStack.pop();
+            char op = operatorStack.pop();
+            String res = op + op1 + op2;
+            operandStack.push(res);
+        }
+
+        return operandStack.pop();
+    }
+}

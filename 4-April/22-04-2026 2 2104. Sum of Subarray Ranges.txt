@@ -1,0 +1,88 @@
+https://leetcode.com/problems/sum-of-subarray-ranges/
+O(n) S(n)
+
+class Solution {
+    public long[] subArrayMaxs(int[] arr){
+        int n = arr.length;
+        int[] nse = new int[n]; // Next Smaller Element
+        int[] pse = new int[n]; // Previous Smaller Element
+        Stack<Integer> st = new Stack<>();
+
+        // Find Next Smaller Element
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.isEmpty() && arr[i] >= arr[st.peek()]) {
+                st.pop();
+            }
+            nse[i] = st.isEmpty() ? n : st.peek();
+            st.push(i);
+        }
+
+        st.clear();
+
+        // Find Previous Smaller Element
+        for (int i = 0; i < n; i++) {
+            // Note: use < here to avoid double counting duplicates
+            while (!st.isEmpty() && arr[i] > arr[st.peek()]) {
+                st.pop();
+            }
+            pse[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(i);
+        }
+        long[] answer = new long[n];
+        for (int i = 0; i < n; i++) {
+            int leftDist = i - pse[i];
+            int rightDist = nse[i] - i;
+            answer[i] = (long) leftDist * arr[i] * rightDist;
+        }
+
+        return answer;
+    }
+
+    public long[] subArrayMins(int[] arr) {
+        int n = arr.length;
+        int[] nse = new int[n]; // Next greater Element
+        int[] pse = new int[n]; // Previous greater Element
+        Stack<Integer> st = new Stack<>();
+
+        // Find Next Greater Element
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.isEmpty() && arr[i] <= arr[st.peek()]) {
+                st.pop();
+            }
+            nse[i] = st.isEmpty() ? n : st.peek();
+            st.push(i);
+        }
+
+        st.clear();
+
+        // Find Previous Greater Element
+        for (int i = 0; i < n; i++) {
+            // Note: use < here to avoid double counting duplicates
+            while (!st.isEmpty() && arr[i] < arr[st.peek()]) {
+                st.pop();
+            }
+            pse[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(i);
+        }
+        long[] answer = new long[n];
+        for (int i = 0; i < n; i++) {
+            int leftDist = i - pse[i];
+            int rightDist = nse[i] - i;
+            answer[i] = (long) leftDist * arr[i] * rightDist;
+        }
+
+        return answer;
+    }
+    public long subArrayRanges(int[] nums) {
+        long[] maximumArray = subArrayMaxs(nums);
+        long[] minimumArray = subArrayMins(nums);
+        long allMaximums = 0;
+        long allMinimums = 0;
+        long answer = 0;
+        for(int i = 0;i<nums.length;i++){
+            allMaximums += maximumArray[i];
+            allMinimums += minimumArray[i];
+        }
+        return allMaximums - allMinimums;
+    }
+}

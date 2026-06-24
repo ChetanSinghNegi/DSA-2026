@@ -1,0 +1,56 @@
+https://leetcode.com/problems/valid-anagram/description/
+
+M1) O(n + m ) S(1)
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if(s.length() != t.length() ) return false;
+        int[] freq = new int[26];
+        for(char ch: s.toCharArray()){
+            freq[ch-'a']++;
+        }
+        for(char ch: t.toCharArray()){
+            freq[ch-'a']--;
+        }
+        for(int i = 0;i<26;i++){
+            if(freq[i] != 0) return false;
+        }
+        return true;
+    }
+}
+
+M2) O(n+m) S(1)
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if(s.length() != t.length()) return false;
+        HashMap<Character, Integer> hm1 = new HashMap<>();
+        HashMap<Character, Integer> hm2 = new HashMap<>();
+        for(char ch: s.toCharArray()){
+            hm1.put(ch, hm1.getOrDefault(ch,0)+1);
+        }
+        for(char ch: t.toCharArray()){
+            hm2.put(ch, hm2.getOrDefault(ch,0)+1);
+        }
+        for(char ch: hm1.keySet()){
+            int val1 = hm1.get(ch);
+            int val2 = hm2.getOrDefault(ch,0);
+            if(val1 != val2) return false;
+        }
+        return true;
+    }
+}
+
+
+O(nlogn + mlogm) S(n)
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if(s.length() != t.length() ) return false;
+        char[] sArr = s.toCharArray();
+        char[] tArr = t.toCharArray();
+        Arrays.sort(sArr);
+        Arrays.sort(tArr);
+        for(int i = 0;i<sArr.length;i++){
+            if(sArr[i] != tArr[i]) return false;
+        }
+        return true;
+    }
+}

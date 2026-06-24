@@ -1,0 +1,18 @@
+https://www.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1
+O(n) S(n)
+
+class Solution {
+    // Function to check whether there is a subarray present with 0-sum or not.
+    static boolean findsum(int arr[]) {
+        // Your code here
+        Set<Integer> st = new HashSet<>();
+        int sum = 0;
+        st.add(0);
+        for(int i = 0;i<arr.length;i++){
+            sum+=arr[i];
+            if(st.contains(sum) == true) return true;
+            st.add(sum);
+        }
+        return false;
+    }
+}

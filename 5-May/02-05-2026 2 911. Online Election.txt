@@ -1,0 +1,45 @@
+https://leetcode.com/problems/online-election/
+
+// Constructor => O(n) S(n)
+// Leader Check at t time => O(logn) S(1)
+class TopVotedCandidate {
+    int[] leads;
+    int[] times;
+
+    public TopVotedCandidate(int[] persons, int[] times) {
+        int n = persons.length;
+        this.times = times;
+        leads = new int[n];
+        int[] freq = new int[n];
+        int maxValue = 0, maxFreq = 0;
+        for(int i = 0;i<n;i++){
+            int newFreq = freq[persons[i]]+1;
+            freq[persons[i]] = newFreq;
+            if(newFreq >= maxFreq){
+                maxValue = persons[i];
+                maxFreq = newFreq;
+            }
+            leads[i] = maxValue;
+        }
+    }
+    
+    public int q(int t) {
+        int left = 0, right = leads.length - 1, timeIdx = 0;
+        while(left <= right){
+            int mid = left + (right - left)/2;
+            if(times[mid] <= t){
+                timeIdx = mid;
+                left = mid+1;
+            }else {
+                right = mid - 1;
+            }
+        }
+        return leads[timeIdx];
+    }
+}
+
+/**
+ * Your TopVotedCandidate object will be instantiated and called as such:
+ * TopVotedCandidate obj = new TopVotedCandidate(persons, times);
+ * int param_1 = obj.q(t);
+ */

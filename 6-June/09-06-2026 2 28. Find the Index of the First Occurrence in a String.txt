@@ -1,0 +1,47 @@
+https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+O(n+m) S(n)
+
+class Solution {
+    public int strStr(String txt, String pat) {
+        int patLen = pat.length(), txtLen = txt.length();
+        int[] lps = new int[patLen];
+        constructLPS(pat, lps);
+        // System.out.println(Arrays.toString(lps));
+        int i = 0, j=0;
+        while(i<txtLen){
+            // System.out.println(i+"   "+j+"   "+txt.charAt(i)+"   "+pat.charAt(j));
+            if(txt.charAt(i)==pat.charAt(j)){
+                i++;
+                j++;
+                if(j==patLen){
+                    return i - patLen ;
+                }
+            }else{
+                if(j != 0){
+                    j = lps[j-1];
+                }else{
+                    i++;
+                }
+            }
+        }
+        return -1;
+    }
+    public void constructLPS(String pat, int[] lps){
+        int i = 1, len=0;
+        lps[0] = 0;
+        while(i<pat.length()){
+            if(pat.charAt(i) == pat.charAt(len)){
+                len++;
+                lps[i] = len;
+                i++;
+            }else{
+                if(len != 0){
+                    len = lps[len-1];
+                }else{
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+    }
+}

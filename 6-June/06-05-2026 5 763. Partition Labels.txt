@@ -1,0 +1,24 @@
+https://leetcode.com/problems/partition-labels/
+O(n) S(n)
+
+class Solution {
+    public List<Integer> partitionLabels(String s) {
+        List<Integer> ans = new ArrayList<>();
+        HashMap<Character, Integer> hm = new HashMap<>();
+        int st = 0, end= 0;
+        for(int i =0;i<s.length();i++){
+            hm.put(s.charAt(i), i);
+        }
+        System.out.println(hm);
+
+        for(int i = 0;i<s.length();i++){
+            char ch = s.charAt(i);
+            end = Math.max(end, hm.get(ch)); //max idx where our current letters resides last.
+            if(i == end){
+                ans.add(end - st+1);
+                st = i+1;
+            }
+        }
+        return ans;
+    }
+}

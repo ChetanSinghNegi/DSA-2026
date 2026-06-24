@@ -1,0 +1,19 @@
+https://leetcode.com/problems/valid-perfect-square/
+
+O(logn) S(1)
+
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        if(num == 1) return true;
+        int left = 1, right = num/2;
+        long numLong = (long)(num);
+        while(left <= right){
+            int mid = left + (right - left)/2;
+            long midSq = (long)mid*mid;
+            if(midSq == numLong) return true;
+            else if(midSq < numLong) {left = mid+1;}
+            else {right = mid-1;}
+        }
+        return false;
+    }
+}

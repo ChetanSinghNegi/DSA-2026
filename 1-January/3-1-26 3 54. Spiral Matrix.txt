@@ -1,0 +1,36 @@
+https://leetcode.com/problems/spiral-matrix/description/
+
+O(tr*tc) S(tr*sc)
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int ctr = 0;
+        int tr = matrix.length;
+        int tc = matrix[0].length;
+        int sr = 0,sc = 0, dr = tr -1, dc = tc-1;
+        List<Integer> ans = new ArrayList<>();
+        while(ctr < tr*tc){
+            for(int c = sc; c<= dc && ctr < tr*tc; c++){
+                ans.add(matrix[sr][c]);
+                ctr++;
+            }
+            sr++;
+            for(int r = sr; r <= dr && ctr < tr*tc; r++){
+                ans.add(matrix[r][dc]);
+                ctr++;
+            }
+            dc--;
+            for(int c = dc; c>=sc && ctr < tr*tc; c--){
+                ans.add(matrix[dr][c]);
+                ctr++;
+            }
+            dr--;
+            for(int r = dr; r >= sr && ctr < tr*tc; r--){
+                ans.add(matrix[r][sc]);
+                ctr++;
+            }
+            sc++;
+        }
+        return ans;
+    }
+}

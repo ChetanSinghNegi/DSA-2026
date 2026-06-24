@@ -1,0 +1,27 @@
+https://leetcode.com/problems/unique-email-addresses/
+
+O(n*m) S(n*m) 
+n = no of emails
+m = avg length of email
+
+
+class Solution {
+    public int numUniqueEmails(String[] emails) {
+        HashSet<String> hs = new HashSet<>();
+        for(String email: emails){
+            int idx = email.indexOf('@');
+            StringBuilder sb = new StringBuilder("");
+            for(int i = 0;i<idx;i++){
+                char ch = email.charAt(i);
+                if(ch=='.') continue;
+                if(ch=='+') break;
+                sb.append(ch);
+            }
+            sb.append('@');
+            String domainPart = email.substring(idx+1);
+            sb.append(domainPart);
+            hs.add(sb.toString());
+        }
+        return hs.size();
+    }
+}

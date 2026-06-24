@@ -1,0 +1,26 @@
+https://leetcode.com/problems/next-greater-element-i/
+O(n) S(n)
+
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int n1=nums1.length;
+        int n2=nums2.length;
+        int[] ans=new int[nums1.length];
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        Stack<Integer> st=new Stack<>();
+        for(int i= n2 - 1;i>=0;i--){
+            int currEle=nums2[i];
+            while(st.size()>0 && currEle>nums2[st.peek()]){
+                st.pop();
+            }
+            int ngEle = st.size() == 0 ? -1: nums2[st.peek()];
+            hm.put(currEle, ngEle);
+            st.push(i);
+        }
+        for(int i = 0;i<n1;i++){
+            ans[i] = hm.get(nums1[i]);
+        }
+        return ans;
+        
+    }
+}

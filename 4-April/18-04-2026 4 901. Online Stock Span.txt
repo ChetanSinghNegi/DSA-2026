@@ -1,0 +1,27 @@
+https://leetcode.com/problems/online-stock-span/
+O(n) S(n)
+
+class StockSpanner {
+    ArrayList<Integer> stocks;
+    Stack<Integer> pgEle;
+    public StockSpanner() {
+        stocks = new ArrayList<>();
+        pgEle = new Stack<>();
+    }
+    
+    public int next(int price) {
+        while(pgEle.size() > 0 && stocks.get(pgEle.peek()) <= price){
+            pgEle.pop();
+        }
+        int spanValue = pgEle.size() == 0 ? stocks.size() + 1 : stocks.size() - pgEle.peek();
+        pgEle.push(stocks.size());
+        stocks.add(price);
+        return spanValue;
+    }
+}
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner obj = new StockSpanner();
+ * int param_1 = obj.next(price);
+ */

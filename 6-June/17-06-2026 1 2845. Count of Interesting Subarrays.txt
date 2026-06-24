@@ -1,0 +1,20 @@
+https://leetcode.com/problems/count-of-interesting-subarrays/
+O(n) S(n)
+
+class Solution {
+    public long countInterestingSubarrays(List<Integer> nums, int modulo, int k) {
+        int n = nums.size();
+        int cnt = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        long ansCount = 0;
+        hm.put(0,1);
+        for(int i = 0;i<n;i++){
+            cnt = nums.get(i) % modulo == k ? cnt+1 : cnt;
+            int currRem = cnt % modulo;
+            int need = ( currRem - k + modulo ) % modulo;
+            ansCount += (long)hm.getOrDefault(need, 0);
+            hm.put(currRem, hm.getOrDefault(currRem,0)+1);
+        }
+        return ansCount;
+    }
+}

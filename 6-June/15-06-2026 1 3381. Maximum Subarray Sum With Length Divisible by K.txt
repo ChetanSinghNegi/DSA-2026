@@ -1,0 +1,24 @@
+https://leetcode.com/problems/maximum-subarray-sum-with-length-divisible-by-k/
+O(n) S(n)
+
+class Solution {
+    public long maxSubarraySum(int[] nums, int k) {
+        long sum = 0, maxSum = Long.MIN_VALUE;
+        HashMap<Integer, Long> hm = new HashMap<>();
+        hm.put(0, 0l);
+        for(int i = 0;i<nums.length;i++){
+            int currSz = i+1;
+            int count = currSz % k;
+            sum += nums[i];
+            if(hm.containsKey(count) == true){
+                long prevSum = hm.get(count);
+                maxSum = Math.max(maxSum, sum - prevSum);
+                if(prevSum > sum) hm.put(count, sum); //putting small
+            }else{
+                hm.put(count, sum);
+            }
+            // System.out.println("i=>"+i+" count=>"+count+"   hm=>"+hm+"  sum"+sum+"  maxSum"+maxSum);
+        }
+        return maxSum;
+    }
+}

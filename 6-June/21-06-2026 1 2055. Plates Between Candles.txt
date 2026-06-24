@@ -1,0 +1,44 @@
+https://leetcode.com/problems/plates-between-candles/
+O(n) S(n)
+
+class Solution {
+    class Pair{
+        int sum;
+        int leftCandleIdx;
+        int rightCandleIdx;
+        Pair(int sum, int leftCandleIdx, int rightCandleIdx){
+            this.sum = sum;
+            this.leftCandleIdx = leftCandleIdx;
+            this.rightCandleIdx = rightCandleIdx;
+        }
+    }
+    public int[] platesBetweenCandles(String s, int[][] queries) {
+        int sLen = s.length(), sum = 0, leftCandleIdx = -1, rightCandleIdx = sLen, qLen = queries.length;
+        Pair[] psa = new Pair[sLen];
+        for(int i = 0;i<sLen;i++){
+            char ch = s.charAt(i);
+            if(ch == '|'){
+                leftCandleIdx = i;
+            }else{
+                sum++;
+            }
+            psa[i] = new Pair(sum, leftCandleIdx, rightCandleIdx);
+        }
+        for(int i = sLen - 1;i>=0;i--){
+            char ch = s.charAt(i);
+            if(ch == '|') rightCandleIdx = i;
+            psa[i].rightCandleIdx = rightCandleIdx;
+        }
+        int[] ans = new int[qLen]; 
+        for(int i=0;i<qLen;i++){
+            int[] query = queries[i];
+            int queryLeftEdgeIdx = psa[query[0]].leftCandleIdx == query[0] ? query[0]: psa[query[0]].rightCandleIdx;
+            int queryRightEdgeIdx = psa[query[1]].rightCandleIdx == query[1] ? query[1]: psa[query[1]].leftCandleIdx;
+            if(queryLeftEdgeIdx >= queryRightEdgeIdx) continue;
+            int leftEdge = queryLeftEdgeIdx < sLen ? psa[queryLeftEdgeIdx].sum : 0;
+            int rightEdge = queryRightEdgeIdx >= 0 ? psa[queryRightEdgeIdx].sum : 0;
+            ans[i] = rightEdge - leftEdge;
+        }
+        return ans;
+    }
+}

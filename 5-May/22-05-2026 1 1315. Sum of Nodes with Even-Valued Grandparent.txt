@@ -1,0 +1,14 @@
+https://leetcode.com/problems/sum-of-nodes-with-even-valued-grandparent/
+O(n) S( Rec(height) + Aux(1) ) 
+class Solution {
+    public int sumEvenGrandparent(TreeNode root) {
+        return helper(root, false, false); 
+    }
+    public int helper(TreeNode node, boolean parentFlag, boolean grandParentFlag){
+        if(node == null) return 0;
+        int currVal = grandParentFlag == false ? 0 : node.val;
+        int leftSum = helper(node.left, node.val % 2 == 0, parentFlag);
+        int rightSum = helper(node.right, node.val % 2 == 0, parentFlag);
+        return leftSum + rightSum + currVal;
+    }
+}

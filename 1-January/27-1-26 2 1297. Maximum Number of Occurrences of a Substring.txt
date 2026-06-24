@@ -1,0 +1,66 @@
+https://leetcode.com/problems/maximum-number-of-occurrences-of-a-substring/
+
+O(n*minsize) S(n*minsize)
+
+M1)
+class Solution {
+    public int maxFreq(String s, int maxLetters, int minSize, int maxSize) {
+        HashMap<Character, Integer> currSubstringMap = new HashMap<>(); //for saving window substring
+        HashMap<String, Integer> substringFreqMap = new HashMap<>(); //for saving valid substring Map
+        for(int i = 0;i<minSize;i++){
+            char ch = s.charAt(i);
+            currSubstringMap.put(ch, currSubstringMap.getOrDefault(ch,0)+1);
+        }
+
+        if(currSubstringMap.size() <= maxLetters) substringFreqMap.put(s.substring(0,minSize),1);
+        for(int i = minSize;i<s.length();i++){
+            char prevChar = s.charAt(i-minSize);
+            if(currSubstringMap.get(prevChar) > 1) currSubstringMap.put(prevChar, currSubstringMap.get(prevChar)-1);
+            else currSubstringMap.remove(prevChar);
+            char currChar = s.charAt(i);
+            currSubstringMap.put(currChar, currSubstringMap.getOrDefault(currChar,0)+1);
+            String substring = s.substring(i-minSize+1, i+1);
+            if(currSubstringMap.size() <= maxLetters) substringFreqMap.put(substring, substringFreqMap.getOrDefault(substring,0)+1);
+        }
+
+        int maxRes = 0;
+        for(Integer val: substringFreqMap.values()){
+            if(val > maxRes) maxRes = val;
+        }
+        
+        return maxRes;
+    }
+}
+
+M2) Store all string in hashmap along with frequencies. then later check for valid substring
+
+class Solution {
+    public int maxFreq(String s, int maxLetters, int minSize, int maxSize) {
+		int maxOccurrence = 0;
+		Map<String, Integer> subStrToCount = new HashMap<>();
+		int left = 0, right = minSize;
+		while (right <= s.length()) {
+			String subString = s.substring(left, right);
+			subStrToCount.put(subString, subStrToCount.getOrDefault(subString, 0) + 1);
+			left++;
+			right++;
+		}
+		for (String str : subStrToCount.keySet()) {
+			int count = subStrToCount.get(str);
+			if (count > maxOccurrence && isValidSubstring(str, maxLetters)) {
+				maxOccurrence = count;
+			}
+		}
+		return maxOccurrence;
+	}
+
+	private boolean isValidSubstring(String subString, int maxLetters) {
+		Set<Character> uniqueChars = new HashSet<>();
+		for (char ch : subString.toCharArray()) {
+			uniqueChars.add(ch);
+			if (uniqueChars.size() > maxLetters)
+				return false;
+		}
+		return true;
+	}
+}

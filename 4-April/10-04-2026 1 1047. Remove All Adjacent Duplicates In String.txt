@@ -1,0 +1,19 @@
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
+O(n) S(n)
+
+class Solution {
+    public String removeDuplicates(String s) {
+        StringBuilder sb = new StringBuilder("");
+        for(int i = 0;i< s.length();i++){
+            char ch = s.charAt(i);
+            char lastChar = sb.length() > 0 ? sb.charAt(sb.length()-1) : '-';
+            if(ch == lastChar){
+                sb.deleteCharAt(sb.length()-1);
+                continue;
+            }else{
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
+    }
+}

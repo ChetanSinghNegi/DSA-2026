@@ -1,0 +1,26 @@
+https://leetcode.com/problems/asteroid-collision/
+O(n) S(n)
+
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stk = new Stack<>();
+        for(int currAsteroid: asteroids){
+            while(stk.size() > 0 && isOpposite(stk.peek(), currAsteroid) && stk.peek() < Math.abs(currAsteroid)){
+                stk.pop();
+            }
+            if(stk.size() > 0 && isOpposite(stk.peek(), currAsteroid) && stk.peek() == Math.abs(currAsteroid)) {stk.pop();}
+            else if(stk.size() > 0 && isOpposite(stk.peek(), currAsteroid) && stk.peek() > Math.abs(currAsteroid)) {continue;}
+            else {stk.push(currAsteroid);}
+        }
+        int stkSize = stk.size();
+        int[] ans = new int[stkSize];
+        for(int i = stkSize - 1; i>=0;i--){
+            ans[i] = stk.pop();
+        }
+        return ans;
+    }
+    public boolean isOpposite(int n1, int n2){
+        if(n1 > 0 && n2 < 0 ) return true;
+        return false;
+    }
+}

@@ -1,0 +1,31 @@
+https://leetcode.com/problems/most-frequent-subtree-sum/
+O(n) S(n)
+class Solution {
+    public int[] findFrequentTreeSum(TreeNode root) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        helper(root, hm);
+        int maxFreq = 0, count=0;
+        for(int key: hm.keySet()){
+            int val = hm.get(key);
+            if(val == maxFreq) count++;
+            else if(val>maxFreq) {
+                maxFreq = val;
+                count = 1;
+            };
+        }
+        int[] ans = new int[count];
+        int idx = 0;
+        for(int key: hm.keySet()){
+            if(hm.get(key)==maxFreq) ans[idx++] = key;
+        }
+        return ans;
+    }
+    public int helper(TreeNode node, HashMap<Integer, Integer> hm){
+        if(node == null) return 0;
+        int leftSum = helper(node.left, hm);
+        int rightSum = helper(node.right, hm);
+        int currSum = node.val + leftSum + rightSum;
+        hm.put(currSum, hm.getOrDefault(currSum,0)+1);
+        return currSum;
+    }
+}

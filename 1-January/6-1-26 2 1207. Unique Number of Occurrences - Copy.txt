@@ -1,0 +1,23 @@
+https://leetcode.com/problems/unique-number-of-occurrences/
+
+O(n) S(1)
+
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        HashMap<Integer, Integer> freq = new HashMap<>();
+        for(int ele: arr){
+            if(freq.containsKey(ele)){
+                int prev = freq.get(ele);
+                freq.put(ele,prev+1);
+            }else{
+                freq.put(ele,1);
+            }
+        }
+        HashSet<Integer> hs = new HashSet<>();
+        for(int val: freq.values()){
+            if(hs.contains(val)) return false;
+            hs.add(val);
+        }
+        return true;
+    }
+}

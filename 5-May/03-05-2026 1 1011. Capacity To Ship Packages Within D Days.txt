@@ -1,0 +1,37 @@
+https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/
+O(nlogs) S(1) s=> Sum of weights
+
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        int minCapacity = 0, maxCapacity = 0, n = weights.length;
+        for(int i= 0;i<n;i++){
+            minCapacity = Math.max(weights[i], minCapacity);
+            maxCapacity = weights[i] + maxCapacity;
+        }
+        int ans = 0;
+        while(minCapacity <= maxCapacity){
+            int mid = minCapacity + (maxCapacity - minCapacity)/2;
+            boolean isValidDays = isShipCapacityValid(mid, days, weights);
+            if(isValidDays == true) {
+                ans = mid;
+                maxCapacity = mid-1;
+            }else {
+                minCapacity = mid+1;
+            }
+        }
+        return ans;
+    }
+    private boolean isShipCapacityValid(int cap, int days, int[] weights){
+        int daysRequired = 0, currWeight = 0;
+        for(int i = 0; i< weights.length; i++){
+            if(currWeight + weights[i] > cap){
+                currWeight = 0;
+                daysRequired++;
+            }
+            currWeight += weights[i];
+            if(daysRequired > days) break;
+        }
+        if(currWeight != 0) daysRequired++;
+        return daysRequired <= days;
+    }
+}

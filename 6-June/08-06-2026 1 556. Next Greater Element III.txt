@@ -1,0 +1,34 @@
+https://leetcode.com/problems/next-greater-element-iii/
+O(n) S(n)
+
+class Solution {
+    public void reverse(int st, char[] digits){
+        int ed = digits.length-1;
+        while(st < ed){
+            char d1 = digits[st];
+            digits[st] = digits[ed];
+            digits[ed] = d1;
+            st++; ed--;
+        }
+    }
+    public int nextGreaterElement(int n) {
+        char[] digits = String.valueOf(n).toCharArray();
+        int size = digits.length;
+        int i = size-2;
+        while(i>=0 && digits[i] >= digits[i+1]){
+            i--;
+        }
+        if(i<0) return -1;
+        int j = size-1;
+        while(j >= 0 && digits[i] >= digits[j]){
+            j--;
+        }
+        char bigDigit = digits[j];
+        digits[j] = digits[i];
+        digits[i] = bigDigit;
+        reverse(i+1, digits);
+        long result = Long.parseLong(new String(digits));
+        if(result > Integer.MAX_VALUE) return -1;
+        return (int)result;
+    }
+}

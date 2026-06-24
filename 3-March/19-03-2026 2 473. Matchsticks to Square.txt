@@ -1,0 +1,47 @@
+https://leetcode.com/problems/matchsticks-to-square/description/
+
+Time Complexity : O(n*2^n) (Worst case)
+Space Complexity : rec - S(n) temp - S(1) => S(1)
+
+class Solution {
+    public boolean makesquare(int[] matchsticks) {
+        int sum = 0;
+        for(int ele:matchsticks){
+            sum += ele;
+        }
+        int targetSum = sum/4;
+        if(sum % 4 != 0) return false;
+        for(int ele:matchsticks) if(ele > targetSum) return false;
+        Arrays.sort(matchsticks);
+        reverse(matchsticks);
+        return helper(0, 0, targetSum, 4, matchsticks);
+    }
+
+    private void reverse(int[] nums) {
+        for (int i = 0, j = nums.length - 1; i < j; i++, j--) {
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+        }
+    }
+
+    public boolean helper(int stIdx, int currSum, int targetSum, int sidesLeft, int[] matchsticks){
+        if(sidesLeft == 1) return true;
+
+        if(currSum == targetSum){
+            return helper(0, 0, targetSum, sidesLeft-1, matchsticks);
+        }
+
+        for(int i = stIdx;i<matchsticks.length;i++){
+            if(matchsticks[i] == 0 || currSum + matchsticks[i] > targetSum) continue;
+            // OPTIMIZATION: If this stick is the same as the previous one we just tried
+            // and that attempt failed, skip it.
+            if (i > stIdx && matchsticks[i] == matchsticks[i - 1]) continue;
+            int ele = matchsticks[i];
+            matchsticks[i] = 0;
+            if(helper(i+1, currSum + ele, targetSum, sidesLeft, matchsticks)) return true;
+            matchsticks[i] = ele;
+        }
+        return false;
+    }
+}

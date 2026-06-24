@@ -1,0 +1,45 @@
+https://leetcode.com/problems/substrings-of-size-three-with-distinct-characters/
+
+O(n) S(1)
+
+class Solution {
+    public int countGoodSubstrings(String s) {
+        int count = 0;
+        for(int i=0;i<s.length()-2;i++){
+            char a = s.charAt(i);
+            char b = s.charAt(i+1);
+            char c = s.charAt(i+2);
+
+            if(a!=b && a!=c && b!=c){
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+O(n) S(1) More Dynamic Approach
+
+class Solution {
+    public int countGoodSubstrings(String s) {
+        if(s.length() < 3) return 0;
+        int cnt = 0;
+        int k = 3;
+        HashMap<Character,Integer> hm = new HashMap<>();
+        for(int i = 0;i<k;i++){
+            char ch = s.charAt(i);
+            hm.put(ch, hm.getOrDefault(ch,0)+1);
+        }
+        if(hm.size()==3) cnt++;
+        for(int i = k; i<s.length();i++){
+            char firstChar = s.charAt(i-k);
+            int firstCharFreq = hm.get(firstChar);
+            if(firstCharFreq > 1) hm.put(firstChar, firstCharFreq-1);
+            else hm.remove(firstChar);
+            char currChar = s.charAt(i);
+            hm.put(currChar, hm.getOrDefault(currChar,0)+1);
+            if(hm.size()==3) cnt++;
+        }
+        return cnt;
+    }
+}

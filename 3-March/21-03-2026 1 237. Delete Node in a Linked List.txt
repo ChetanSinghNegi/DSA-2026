@@ -1,0 +1,27 @@
+https://leetcode.com/problems/delete-node-in-a-linked-list/
+O(n) S(1)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void deleteNode(ListNode node) {
+        ListNode prev = node;
+        ListNode curr =node;
+        while(curr!=null){
+            ListNode currNext = curr.next;
+            if(currNext== null){
+                prev.next = null;
+                break;
+            }
+            curr.val = currNext.val;
+            prev = curr;
+            curr = currNext;
+        }
+    }
+}

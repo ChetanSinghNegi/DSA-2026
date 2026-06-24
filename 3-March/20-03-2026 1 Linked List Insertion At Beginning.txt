@@ -1,0 +1,24 @@
+https://www.geeksforgeeks.org/problems/linked-list-insertion-at-beginning/1
+
+O(1) S(1)
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+*/
+
+class Solution {
+    public Node insertAtFront(Node head, int x) {
+        Node newHead = new Node(x);
+        newHead.next = head;
+        head = newHead;
+        return newHead;
+    }
+}

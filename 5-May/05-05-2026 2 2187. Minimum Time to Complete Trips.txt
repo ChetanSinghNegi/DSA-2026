@@ -1,0 +1,27 @@
+https://leetcode.com/problems/minimum-time-to-complete-trips/
+O(nlog(maxTime)) S(1)
+
+class Solution {
+    public long minimumTime(int[] time, int totalTrips) {
+        long maxTime = Long.MAX_VALUE;
+        for(int iTime:time){
+            maxTime = Math.min(maxTime,(long)iTime * totalTrips);
+        }
+        long minTime = 1, ans = 0;
+        while(minTime <= maxTime){
+            long midTime = minTime + (maxTime - minTime)/2;
+            long currTrips = 0;
+            for(int iTime: time){
+                currTrips += midTime/iTime;
+                if(currTrips >= totalTrips) break; //pruning
+            }
+            if(currTrips >= totalTrips){
+                ans = midTime;
+                maxTime = midTime-1;
+            }else{
+                minTime = midTime+1;
+            }
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,33 @@
+https://leetcode.com/problems/combination-sum/
+O(exponential) S(exponential for recursive stack + 1)
+
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> combinations = new ArrayList<>();
+        List<Integer> combination = new ArrayList<>();
+        helper(0, 0, combination, combinations, target, candidates);
+        return combinations;
+    }
+    public void helper(int idx, int currSum, List<Integer> combination, List<List<Integer>> combinations, int target, int[] nums ){
+        // System.out.println("currSum----"+currSum+" combination--"+combination);
+        if(currSum == target) {
+            combinations.add(new ArrayList<>(combination));
+            return;
+        }
+        if(idx == nums.length) return;
+        int updatedSum = currSum;
+        helper(idx+1, updatedSum, combination, combinations, target, nums);
+        int i = 0;
+        while( updatedSum < target ){
+            i++;
+            updatedSum += nums[idx];
+            combination.add(nums[idx]);
+            helper(idx+1, updatedSum, combination, combinations, target, nums);
+        }
+        while(i >= 1 ){
+            combination.remove(combination.size()-1);
+            i--;
+        }
+
+    }
+}

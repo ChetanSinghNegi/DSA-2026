@@ -1,0 +1,35 @@
+https://leetcode.com/problems/sum-of-distances/
+https://leetcode.com/problems/intervals-between-identical-elements/
+O(n) S(n) 
+
+class Solution {
+    public long[] distance(int[] nums) {
+        int n = nums.length;
+        long[] ans = new long[n];
+        HashMap<Integer, List<Integer>> hm = new HashMap<>();
+        for(int i = 0;i<n;i++){
+            if(hm.containsKey(nums[i]) == true) hm.get(nums[i]).add(i);
+            else {
+                List<Integer> curr = new ArrayList<>();
+                curr.add(i);
+                hm.put(nums[i], curr);
+            }
+        }
+        for(int key: hm.keySet()){
+            List<Integer> al = hm.get(key);
+            long totalSum = 0, leftSum = 0, alSz = al.size();
+            for(int num: al){
+                totalSum += num;
+            }
+            for(int i = 0;i<alSz;i++){
+                int num = al.get(i);
+                long leftAns = (long)num * i - leftSum;
+                long rightSum = totalSum - leftSum - num;
+                long rightAns = rightSum - (long)num * (alSz - i - 1 );
+                ans[num] = leftAns + rightAns;
+                leftSum += num;
+            }
+        }
+        return ans;
+    }
+}

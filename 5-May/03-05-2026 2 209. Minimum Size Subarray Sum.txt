@@ -1,0 +1,32 @@
+https://leetcode.com/problems/minimum-size-subarray-sum/description/
+BS Method => O(nlogn) S(1)
+Better Method Sliding Window => O(n)
+
+class Solution {
+    public boolean isSubarrayValid(int size, int target, int[] nums){
+        if(size == 0) return false;
+        int left = 0, right = 0, sum = 0;
+        while(right < nums.length){
+            sum+=nums[right];
+            while(right - left+1 >size){
+                sum -= nums[left];
+                left++;
+            }
+            if(right-left+1 <= size && sum >= target) return true;
+            right++;
+        }
+        return false;
+    }
+    public int minSubArrayLen(int target, int[] nums) {
+        int left = 1, right = nums.length, ans = 0;
+        while(left<=right){
+            int mid = left+(right-left)/2;
+            boolean isValid = isSubarrayValid(mid, target, nums);
+            if(isValid == true){
+                ans = mid;
+                right = mid-1;
+            }else left = mid+1;
+        }
+        return ans;
+    }
+}

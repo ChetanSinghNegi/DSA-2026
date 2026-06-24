@@ -1,0 +1,22 @@
+https://leetcode.com/problems/maximum-good-subarray-sum/
+O(n) S(n)
+class Solution {
+    public long maximumSubarraySum(int[] nums, int k) {
+        long sum = 0, maxSum = Long.MIN_VALUE;
+        HashMap<Integer,Long> hm = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            int num = nums[i];
+            if(hm.containsKey(num-k)){
+                long minValue = hm.get(num-k);
+                maxSum = Math.max(maxSum, sum + num - minValue );
+            }
+            if(hm.containsKey(num+k)){
+                long minValue = hm.get(num+k);
+                maxSum = Math.max(maxSum, sum + num - minValue);
+            }
+            hm.put(num, Math.min(hm.getOrDefault(num, Long.MAX_VALUE), sum));
+            sum += num;
+        }
+        return maxSum != Long.MIN_VALUE ? maxSum : 0;
+    }
+}

@@ -1,0 +1,22 @@
+https://leetcode.com/problems/shortest-unsorted-continuous-subarray/
+
+O(n) S(1)
+
+class Solution {
+    public int findUnsortedSubarray(int[] nums) {
+        int len = nums.length - 1, left = -1, right = -1,
+            maxSeen = nums[0], minSeen = nums[len];
+        for (int i = 1; i <= len; i++) {
+            int j = len - i;
+            int a = nums[i], b = nums[j];
+            if (a < maxSeen) right = i;
+            else maxSeen = a;
+            if (b > minSeen) left = j;
+            else minSeen = b;
+        }
+        int correctlySortedRight = len - right;
+        int correctlySortedLeft = left;
+        int totalFaulty = nums.length - correctlySortedRight - correctlySortedLeft;
+        return right == -1 ? 0 : totalFaulty;
+    }
+}

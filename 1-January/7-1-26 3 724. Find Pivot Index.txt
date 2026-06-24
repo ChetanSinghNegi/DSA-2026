@@ -1,0 +1,38 @@
+https://leetcode.com/problems/find-pivot-index/
+
+O(n) S(n)
+
+class Solution {
+    public int pivotIndex(int[] arr) {
+        int n = arr.length;
+        int[] prefixSumLeft = new int[n];
+        int currSum = 0;
+        for(int i = 0;i<n;i++){
+            if(i == 0) {
+                currSum = arr[i];
+                prefixSumLeft[i] = arr[i];
+                continue;
+            }
+            currSum += arr[i];
+            prefixSumLeft[i] = currSum;
+        }
+        int[] prefixSumRight = new int[n];
+        currSum = 0;
+        for(int i = n-1;i>=0;i--){
+            if(i == n-1) {
+                currSum = arr[i];
+                prefixSumRight[i] = arr[i];
+                continue;
+            }
+            currSum += arr[i];
+            prefixSumRight[i] = currSum;
+        }
+        for(int i = 0;i<n;i++){
+            int leftSum = i==0? 0 : prefixSumLeft[i-1];
+            int rightSum = i== n-1? 0 : prefixSumRight[i+1];
+            if(leftSum == rightSum) return i;
+        }
+        return -1;
+
+    }
+}

@@ -1,0 +1,26 @@
+https://leetcode.com/problems/string-to-integer-atoi/
+O(n) S(1)
+class Solution {
+    public int myAtoi(String s) {
+        s = s.trim();
+        boolean isNegative = false;
+        int i = 0;
+        long sum = 0;
+        while(i < s.length()){
+            if(i == 0 && (s.charAt(i)=='-' || s.charAt(i)=='+')){
+                if( s.charAt(0) == '-' )isNegative = true;
+            }
+            else if(s.charAt(i) >= '0' && s.charAt(i) <= '9'){
+                int curr = s.charAt(i) - '0';
+                sum = sum*10 + curr;
+            }else{
+                break;
+            }
+            if(isNegative == false && sum > Integer.MAX_VALUE) return Integer.MAX_VALUE;   
+            else if(isNegative == true && (-1*sum) < Integer.MIN_VALUE) return Integer.MIN_VALUE;
+            i++;
+        }
+        if(isNegative == true) return (int)(sum) * -1;
+        return (int)(sum);
+    }
+}

@@ -1,0 +1,19 @@
+https://leetcode.com/problems/number-of-burgers-with-no-waste-of-ingredients/
+O(logn) S(1)
+
+class Solution {
+    public List<Integer> numOfBurgers(int tomatoSlices, int cheeseSlices) {
+        int minJumboBurger = 0, maxJumboBurger = cheeseSlices;
+        List<Integer> ans = new ArrayList<>();
+        while(minJumboBurger <= maxJumboBurger){
+            int currJumboBurger = minJumboBurger + (maxJumboBurger - minJumboBurger)/2;
+            int currTomatoSlices = currJumboBurger*4 + (cheeseSlices - currJumboBurger)*2;
+            if(currTomatoSlices == tomatoSlices){
+                ans.add(currJumboBurger); ans.add(cheeseSlices - currJumboBurger);
+                break;
+            }else if(currTomatoSlices > tomatoSlices) maxJumboBurger = currJumboBurger-1;
+            else minJumboBurger = currJumboBurger+1;
+        }
+        return ans;
+    }
+}

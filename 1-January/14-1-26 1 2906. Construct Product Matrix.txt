@@ -1,0 +1,27 @@
+https://leetcode.com/problems/construct-product-matrix/
+
+O(n2) S(1)
+
+class Solution {
+    public int[][] constructProductMatrix(int[][] grid) {
+        int dr = grid.length;
+        int dc = grid[0].length;
+        int mod = 12345;
+        int[][] res = new int[dr][dc];
+        long mul = 1;
+        for(int r = 0; r<dr;r++){
+            for(int c = 0; c< dc; c++){
+                res[r][c] = (int)(mul % mod);
+                mul = mul * grid[r][c] % mod;
+            }
+        }
+        mul = 1;
+        for(int r = dr - 1; r>=0;r--){
+            for(int c = dc - 1; c >= 0;c--){
+                res[r][c] = (int)(res[r][c] * mul % mod);
+                mul = mul * grid[r][c] % mod;
+            }
+        }
+        return res;
+    }
+}
