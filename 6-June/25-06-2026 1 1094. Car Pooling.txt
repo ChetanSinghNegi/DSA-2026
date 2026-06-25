@@ -1,0 +1,24 @@
+https://leetcode.com/problems/car-pooling/
+O(n) S(totalTripDistance)
+class Solution {
+    public boolean carPooling(int[][] trips, int capacity) {
+        int n = 0;
+        for(int[] trip: trips){
+            n = Math.max(n, trip[2]);
+        }
+        int[] ans = new int[n+1];
+        for(int[] trip: trips){
+            ans[trip[1]] += trip[0];
+            if(trip[2] <= n) ans[trip[2]] -= trip[0];
+        }
+        int sum = 0;
+        for(int i = 0;i<=n;i++){
+            sum += ans[i];
+            ans[i] = sum;
+        }
+        for(int currCap: ans){
+            if(currCap > capacity) return false;
+        }
+        return true;
+    }
+}
