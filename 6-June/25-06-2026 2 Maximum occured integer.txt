@@ -1,0 +1,28 @@
+https://www.geeksforgeeks.org/problems/maximum-occured-integer4602/1
+O(maxDistance) S(maxDistance)
+
+class Solution {
+    public int maxOccured(List<Integer> L, List<Integer> R) {
+        // code here
+        int maxLen = 0, maxFreq = 0, ans = 0, currFreq = 0;
+        for(int end: R){
+            maxLen = Math.max(maxLen, end);
+        }
+        int[] range = new int[maxLen+1];
+        for(int i = 0;i<L.size();i++){
+            int st = L.get(i);
+            int ed = R.get(i);
+            range[st]++;
+            if( (ed+1) <= maxLen) range[ed+1]--;
+        }
+        for(int i=0;i<=maxLen;i++){
+            currFreq += range[i];
+            // System.out.println("i=> "+i+"  "+currFreq+" maxFreq  "+maxFreq);
+            if(currFreq > maxFreq){
+                maxFreq = currFreq;
+                ans = i;
+            }
+        }
+        return ans;
+    }
+}

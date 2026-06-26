@@ -1,0 +1,30 @@
+https://www.geeksforgeeks.org/problems/attend-all-meetings/1
+O(nlogn) S(n)
+
+class Solution {
+    static class Pair implements Comparable<Pair>{
+        int st, ed;
+        Pair(int st, int ed){
+            this.st = st;
+            this.ed = ed;
+        }
+        public int compareTo(Pair p2){
+            if(this.st != p2.st) return this.st - p2.st;
+            else return this.ed - p2.ed;
+        }
+    }
+    static boolean canAttend(int[][] arr) {
+        List<Pair> ls = new ArrayList<>();
+        for(int[] meet: arr){
+            Pair curr = new Pair(meet[0],meet[1]);
+            ls.add(curr);
+        }
+        Collections.sort(ls);
+        for(int i = 1;i<ls.size();i++){
+            Pair prev = ls.get(i-1);
+            Pair curr = ls.get(i);
+            if(prev.ed > curr.st) return false;
+        }
+        return true;
+    }
+}

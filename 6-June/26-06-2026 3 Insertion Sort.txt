@@ -1,0 +1,24 @@
+https://www.geeksforgeeks.org/problems/insertion-sort/1
+O(n2) S(1)
+
+class Solution {
+    // Please change the array in-place
+    public void swap(int idx1, int idx2, int[] nums){
+        int temp = nums[idx1];
+        nums[idx1] = nums[idx2];
+        nums[idx2] = temp;
+        // System.out.println("swapping"+idx1+"<->"+idx2);
+    }
+    public void insertionSort(int nums[]) {
+        int swapIdx = 0, n = nums.length;
+        for(int i = 1;i<n;i++){
+            int j = i;
+            while(j > 0 && nums[j] < nums[j-1]){
+                swap(j-1, j, nums);
+                j--;
+            }
+        }
+        // return nums;
+        
+    }
+}

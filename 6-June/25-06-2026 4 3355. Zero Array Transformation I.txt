@@ -1,0 +1,18 @@
+https://leetcode.com/problems/zero-array-transformation-i/
+O(n) S(n)
+
+class Solution {
+    public boolean isZeroArray(int[] nums, int[][] queries) {
+        int n = nums.length, sum = 0;
+        int[] pda = new int[n];
+        for(int[] query: queries){
+            pda[query[0]]++;
+            if(query[1]+1 < n) pda[query[1]+1]--;
+        }
+        for(int i = 0;i<n;i++){
+            sum += pda[i];
+            if(nums[i] > sum) return false;
+        }
+        return true;
+    }
+}

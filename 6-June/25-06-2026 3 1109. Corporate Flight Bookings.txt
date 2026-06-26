@@ -1,0 +1,19 @@
+https://leetcode.com/problems/corporate-flight-bookings/
+O(n) S(n)
+
+class Solution {
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        int[] reservedArr = new int[n];
+        for(int[] booking:bookings){
+            int st = booking[0]-1, ed = booking[1], reservedSeats = booking[2];
+            reservedArr[st] += reservedSeats;
+            if(ed < n) reservedArr[ed] -= reservedSeats;
+        }
+        int sum = 0;
+        for(int i = 0;i<n;i++){
+            sum += reservedArr[i];
+            reservedArr[i] = sum;
+        }
+        return reservedArr;
+    }
+}

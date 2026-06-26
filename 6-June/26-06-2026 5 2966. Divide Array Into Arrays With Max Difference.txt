@@ -1,0 +1,24 @@
+https://leetcode.com/problems/divide-array-into-arrays-with-max-difference/
+O(nlogn) S(1)
+
+class Solution {
+    public int[][] divideArray(int[] nums, int k) {
+        Arrays.sort(nums);
+        int i = 0, n = nums.length;
+        while(i<n){
+            if(nums[i+2] - nums[i] > k) return new int[0][0];
+            i = i+3;
+        }
+        i = 0;
+        int[][] ans = new int[n/3][3];
+        while(i<n){
+            int[] currAns = new int[3];
+            currAns[0] = nums[i];
+            currAns[1] = nums[i+1];
+            currAns[2] = nums[i+2];
+            ans[i/3] = currAns;
+            i += 3;
+        }
+        return ans;
+    }
+}

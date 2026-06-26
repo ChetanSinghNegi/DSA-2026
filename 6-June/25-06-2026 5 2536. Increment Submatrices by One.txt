@@ -1,0 +1,27 @@
+https://leetcode.com/problems/increment-submatrices-by-one/
+O(q * n + n*n)
+
+class Solution {
+    public int[][] rangeAddQueries(int n, int[][] queries) {
+        int[][] ans = new int[n][n];
+        for(int[] query: queries){
+            int stR=query[0], stC = query[1], edR = query[2], edC = query[3];
+            for(int i = stR;i<= edR;i++){
+                ans[i][stC]++;
+            }
+            if(edC + 1 < n){
+                for(int i = stR;i<= edR;i++){
+                    ans[i][edC+1]--;
+                }
+            }
+        }
+        for(int i = 0;i<n;i++){
+            int sum = 0;
+            for(int j = 0;j<n;j++){
+                sum += ans[i][j];
+                ans[i][j] = sum;
+            }
+        }
+        return ans;
+    }
+}
