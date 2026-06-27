@@ -1,0 +1,37 @@
+https://leetcode.com/problems/sort-an-array/
+O(nlogn) S(n)
+
+class Solution {
+    public int[] sortArray(int[] nums) {
+        mergeSortFunc(nums, 0 , nums.length-1);
+        return nums;
+    }
+    public void merge(int st1, int st2, int ed, int[] nums){
+        if(st1 == ed) return;
+        int st1Clone = st1, st2Clone = st2, n = ed - st1 + 1;
+        int[] subNums = new int[n];
+        for(int i= 0;i<n;i++){
+            if(st1Clone >= st2){
+                subNums[i] = nums[st2Clone++];
+            }else if(st2Clone > ed){
+                subNums[i] = nums[st1Clone++];
+            }else{
+                if(nums[st1Clone] <= nums[st2Clone]){
+                    subNums[i] = nums[st1Clone++];
+                }else{
+                    subNums[i] = nums[st2Clone++];
+                }
+            }
+        }
+        for(int i = 0;i<n;i++){
+            nums[st1+i] = subNums[i];
+        }
+    }
+    public void mergeSortFunc(int[] nums, int st, int ed){
+        if(st >= ed) return;
+        int mid = st + (ed-st)/2;
+        mergeSortFunc(nums, st, mid);
+        mergeSortFunc(nums, mid + 1, ed);
+        merge(st, mid+1, ed, nums);
+    }
+}

@@ -1,0 +1,16 @@
+https://leetcode.com/problems/maximum-median-sum-of-subsequences-of-size-3/
+O(nlogn) S(1)
+
+class Solution {
+    public long maximumMedianSum(int[] nums) {
+        long sum = 0;
+        Arrays.sort(nums);
+        int n = nums.length, st = 0, ed = n-1;
+        while(st< ed){
+            sum += nums[ed-1];
+            ed = ed - 2;
+            st = st + 1;
+        }
+        return sum;
+    }
+}

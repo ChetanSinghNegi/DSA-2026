@@ -1,0 +1,36 @@
+https://leetcode.com/problems/destroying-asteroids/
+O(nlogn) S(1)
+class Solution {
+    public boolean asteroidsDestroyed(int mass, int[] asteroids) {
+        Arrays.sort(asteroids);
+        long newMass = (long)mass;
+        for(int asteroid: asteroids){
+            if(newMass < asteroid) return false;
+            newMass += asteroid;
+        }
+        return true;
+    }
+}
+
+
+Jugaadu Solution 
+O(n) S(n)
+class Solution {
+    public boolean asteroidsDestroyed(int mass, int[] asteroids) {
+        int maxAsteroid = 0, minAsteroid = Integer.MAX_VALUE;
+        long[] freq = new long[100001];
+        long newMass = (long)mass;
+        for(int asteroid: asteroids){
+            freq[asteroid]++;
+            minAsteroid = Math.min(minAsteroid, asteroid);
+            maxAsteroid = Math.max(maxAsteroid, asteroid);
+        }
+        for(int asteroid = minAsteroid; asteroid <= maxAsteroid; asteroid++){
+            if(freq[asteroid] > 0){
+                if(newMass < asteroid) return false;
+                newMass += (asteroid * freq[asteroid]);
+            }
+        }
+        return true;
+    }
+}
