@@ -1,0 +1,28 @@
+https://www.geeksforgeeks.org/dsa/quick-sort-algorithm/
+O(nlogn) S(1)
+
+class Solution {
+    public int[] sortArray(int[] nums) {
+        quickSort(0, nums.length-1, nums);
+        return nums;
+    }
+    public int partition(int st, int ed, int[] nums){
+        if(st == ed) return st;
+        int justSmallerIdx = st-1, pivot = nums[ed];
+        for(int i = st;i<=ed;i++){
+            if(nums[i] <= pivot){
+                justSmallerIdx++;
+                int temp = nums[i];
+                nums[i] = nums[justSmallerIdx];
+                nums[justSmallerIdx] = temp;
+            }
+        }
+        return justSmallerIdx;
+    }
+    public void quickSort(int st, int ed, int[] nums){
+        if(st >= ed) return;
+        int pivotIdx = partition(st, ed, nums);
+        quickSort(st, pivotIdx-1, nums);
+        quickSort(pivotIdx+1, ed, nums);
+    }
+}

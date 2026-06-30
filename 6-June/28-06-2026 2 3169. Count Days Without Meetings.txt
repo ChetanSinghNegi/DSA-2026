@@ -1,0 +1,74 @@
+https://leetcode.com/problems/count-days-without-meetings/
+
+
+
+
+M1) Without Pair Class. O(nlogn) S(1)
+class Solution {
+    public int countDays(int days, int[][] meetings) {
+        Arrays.sort(meetings, (a,b) ->{
+                if(a[0] != b[0]) return a[0]-b[0];
+                return a[1]-b[1];
+            }
+        );
+        int occupiedDays = 0, prevEd = 0;
+
+        for(int i = 0;i<meetings.length;i++){ 
+            int[] meeting = meetings[i];
+            if(meeting[0] <= prevEd ){
+                if(meeting[1] <= prevEd) continue;
+                occupiedDays += meeting[1]- prevEd ;
+                prevEd = meeting[1];
+            }else{
+                occupiedDays += meeting[1]-meeting[0]+1;
+                prevEd = meeting[1];
+            }
+        }
+        return days - occupiedDays;
+    }
+}
+
+
+
+
+M2) With Pair Class. O(nlogn) S(n)
+
+class Solution {
+    class Pair{
+        int st, ed;
+        Pair(int st, int ed){
+            this.st = st;
+            this.ed = ed;
+        }
+    }
+    public int countDays(int days, int[][] meetings) {
+        Arrays.sort(meetings, (a,b) ->{
+                if(a[0] != b[0]) return a[0]-b[0];
+                return a[1]-b[1];
+            }
+        );
+        List<Pair> pairAl = new ArrayList<>();
+        int occupiedDays = 0;
+
+        for(int i = 0;i<meetings.length;i++){
+            int[] meeting = meetings[i];
+            if(pairAl.size()>0){
+                Pair topPair = pairAl.get(pairAl.size()-1);
+                int st2 = meeting[0];
+                if(st2<=topPair.ed){
+                    topPair.ed = Math.max(topPair.ed, meeting[1]);
+                }else{
+                    Pair pair = new Pair(meeting[0], meeting[1]);
+                    pairAl.add(pair);
+                }
+            }else{
+                Pair pair = new Pair(meeting[0], meeting[1]);
+                pairAl.add(pair);
+            }    
+        }
+        for(Pair p: pairAl){
+            occupiedDays += p.ed - p.st + 1;
+        }
+        return days - occupiedDays;
+    }
+}

@@ -1,0 +1,38 @@
+https://leetcode.com/problems/top-k-frequent-words
+O(nlogn) S(n)
+
+class Solution {
+    class Pair{
+        String word;
+        int freq;
+        Pair(String word, int freq){
+            this.word = word;
+            this.freq = freq;
+        }
+    }
+    public List<String> topKFrequent(String[] words, int k) {
+        HashMap<String, Integer> freqHm = new HashMap<>();
+        for(String word: words){
+            freqHm.put(word, freqHm.getOrDefault(word, 0)+1);
+        }
+        List<Pair> al = new ArrayList<>();
+        for(String key: freqHm.keySet()){
+            Pair pair = new Pair(key, freqHm.get(key));
+            al.add(pair);
+        }
+        Collections.sort(al, (a,b)->{
+            if(a.freq != b.freq) return b.freq - a.freq;
+            for(int i = 0;i<a.word.length();i++){
+                if(b.word.length() == i) return 1;
+                else if(a.word.charAt(i) < b.word.charAt(i)) return -1;
+                else if(a.word.charAt(i) > b.word.charAt(i)) return 1;
+            }
+            return -1;
+        });
+        List<String> ans = new ArrayList<>();
+        for(int i =0;i<k;i++){
+            ans.add(al.get(i).word);
+        }
+        return ans;
+    }
+}

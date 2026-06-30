@@ -1,0 +1,37 @@
+https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+O(nlogn) S(n)
+
+class Solution {
+    class Pair{
+        int st, ed;
+        Pair(int st, int ed){
+            this.st = st;
+            this.ed = ed;
+        }
+    }
+    public int findMinArrowShots(int[][] points) {
+        Arrays.sort(points, (a,b)->{
+            if (a[0] != b[0]) {
+                return Integer.compare(a[0], b[0]);
+            }
+            return Integer.compare(a[1], b[1]);
+        });
+        List<Pair> al = new ArrayList<>();
+        for(int[] point: points){
+            if(al.size()==0) {
+                Pair pair = new Pair(point[0], point[1]);
+                al.add(pair);
+            }else{
+                Pair topPair = al.get(al.size()-1);
+                if(point[0] <= topPair.ed){
+                    topPair.st = Math.max(topPair.st, point[0]);
+                    topPair.ed = Math.min(topPair.ed, point[1]);
+                }else{
+                    Pair pair = new Pair(point[0], point[1]);
+                    al.add(pair);
+                }
+            }
+        }
+        return al.size();
+    }
+}
