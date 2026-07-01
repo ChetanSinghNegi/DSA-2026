@@ -1,0 +1,46 @@
+https://leetcode.com/problems/minimum-swaps-to-sort-by-digit-sum/
+O(nlogn) S(n)
+
+class Solution {
+    class Pair{
+        int num, idx, sum;
+        Pair(int num, int idx, int sum){
+            this.num = num;
+            this.idx = idx;
+            this.sum = sum;
+        }
+    }
+
+    public int getSum(int num){
+        int sum = 0;
+        while(num != 0){
+            sum += num % 10;
+            num /= 10;
+        }
+        return sum;
+    }
+
+    public int minSwaps(int[] nums) {
+        int n = nums.length, count = 0;
+        Pair[] sortedPairArr = new Pair[n];
+        for(int i = 0;i<n;i++){
+            int sum = getSum(nums[i]);
+            sortedPairArr[i] = new Pair(nums[i], i, sum);
+        }
+        Arrays.sort(sortedPairArr, (a,b)->{
+            if(a.sum != b.sum) return a.sum-b.sum;
+            return a.num - b.num;
+        });
+        for(int i = 0;i<n;i++){
+            Pair curr = sortedPairArr[i];
+            while(curr.idx != i){
+                Pair temp = new Pair(curr.num, curr.idx, curr.sum);
+                Pair dest = sortedPairArr[curr.idx];
+                curr.num = dest.num; curr.idx = dest.idx; curr.sum = dest.sum;
+                dest.num = temp.num; dest.idx = temp.idx; dest.sum = dest.sum;
+                count++;
+            }
+        }
+        return count;
+    }
+}

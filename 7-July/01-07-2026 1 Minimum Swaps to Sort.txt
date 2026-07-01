@@ -1,0 +1,35 @@
+https://www.geeksforgeeks.org/dsa/minimum-number-swaps-required-sort-array/
+O(nlogn) S(n)
+
+class Solution {
+    // Function to find the minimum number of swaps required to sort the array.
+    class Pair{
+        int ele,idx;
+        Pair(int ele, int idx){
+            this.ele = ele;
+            this.idx = idx;
+        }
+    }
+    public int minSwaps(int arr[]) {
+        int n = arr.length, count = 0;
+        Pair[] sortedArr = new Pair[n];
+        for(int i = 0;i<n;i++){
+            sortedArr[i] = new Pair(arr[i], i);
+        }
+        Arrays.sort(sortedArr, (a,b)->{
+            return a.ele-b.ele;
+        });
+        for(int i = 0;i<n;i++){
+            Pair curr = sortedArr[i];
+            while(curr.idx != i){
+                count++;
+                Pair temp = new Pair(curr.ele, curr.idx);
+                Pair dest = sortedArr[sortedArr[i].idx];
+                curr.ele = dest.ele; curr.idx = dest.idx;
+                dest.ele = temp.ele; dest.idx = temp.idx;
+            }
+        }
+        return count;
+        
+    }
+}
